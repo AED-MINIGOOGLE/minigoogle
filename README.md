@@ -1,5 +1,7 @@
+<<<<<<< HEAD
 R Tree
 ========
+
 #### Requirements
 ```sh
 Install brew
@@ -39,4 +41,7 @@ make
 cd ..
 Run the server: `./build/run_server`
 ```
+=======
+# minigoogle
+>>>>>>> 60d1eff54bb2383cf49d55a770a4f0575fc6cee1
 
