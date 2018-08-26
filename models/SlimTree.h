@@ -17,7 +17,7 @@ class SlimTree{
 };
 SlimTree::SlimTree(){
     root->isLeaf = true;
-
+       
 }
 int SlimTree::insertObject(Object * obj){
     int minDistance = INF;
