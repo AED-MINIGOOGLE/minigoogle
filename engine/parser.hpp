@@ -17,7 +17,7 @@ struct RetrievalData{
 class Parser {
 private:
 	std::string File_dir;
-	bool getHead(const std::string & s, int & c);
+	bool getHead(const std::string & s);
 	bool get_eo_doc(const std::string & s);
 	void get_value_of(const std::string & query, const std::string & line, std::string & val);
 	void get_value_of(const std::string & query, const std::string & line, unsigned int & val);

@@ -1,11 +1,10 @@
 
 #include "parser.hpp"
 
-bool Parser::getHead(const std::string & s, int & c) {
+bool Parser::getHead(const std::string & s) {
 	if (s.size() > 3) {
 		if (s.substr(0, 4) == "<doc")
 		{
-			c++;
 			return true;
 		}
 	}
@@ -31,12 +30,11 @@ void Parser::get_value_of(const std::string & query, const std::string & line, u
 
 bool Parser::getNextDocument(std::ifstream & file_open, std::vector<RetrievalData> & ans) {
 	std::string line;
-        int ccc = 0;
         do{
             if(!std::getline(file_open, line))
                 return false;
                         
-        }while(!getHead(line,ccc));
+        }while(!getHead(line));
         unsigned int dbindex;
         get_value_of("dbindex=",line,dbindex);
         std::string title;
