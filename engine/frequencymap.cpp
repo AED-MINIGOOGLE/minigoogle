@@ -1,6 +1,7 @@
 #include "frequencymap.hpp"
 #include<algorithm>
 #include<cstring>
+#include <fstream>
 
 search_result FrequencyMap::search(string const& query) {
     auto freqs = _map[_hash(query.c_str())];
