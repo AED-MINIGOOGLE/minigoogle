@@ -10,7 +10,7 @@ void CliApp::print(search_result result) {
     } else {
         for (auto &it : result) {
 			for (auto& m : it.first)
-            cout << (*(it.second)) << ": " << m.first << ", dbindex: " << m.second << " results." << endl;
+            cout << (*(it.second)) << ", dbindex: " << m.first << ": " << m.second << " results." << endl;
         }
     }
 }

@@ -16,27 +16,27 @@ bool Parser::get_eo_doc(const std::string & s) {
 		return true;
 	return false;
 }
-void get_value_of(const std::string & query, const std::string & line, std::string & val){
+void Parser::get_value_of(const std::string & query, const std::string & line, std::string & val){
 	std::size_t found = line.find(query);
 	std::size_t start_pos = found + query.size();
 	std::size_t found_start_number = line.find('"',start_pos)+1;
 	std::size_t found_finish_number = line.find('"',found_start_number);
 	val = line.substr(found_start_number,found_finish_number-found_start_number);
 }
-void get_value_of(const std::string & query, const std::string & line, unsigned int & val){
+void Parser::get_value_of(const std::string & query, const std::string & line, unsigned int & val){
 	std::string value;
 	get_value_of(query,line,value);
 	val = std::stol(value);
 }
 
-bool Parser::getNexDocument(int & counter, std::ifstream & file_open, std::vector<RetrievalData> & ans) {
+bool Parser::getNextDocument(std::ifstream & file_open, std::vector<RetrievalData> & ans) {
 	std::string line;
         int ccc = 0;
         do{
             if(!std::getline(file_open, line))
                 return false;
                         
-        }while(!get_head(line,ccc));
+        }while(!getHead(line,ccc));
         unsigned int dbindex;
         get_value_of("dbindex=",line,dbindex);
         std::string title;
@@ -66,7 +66,7 @@ bool Parser::getNexDocument(int & counter, std::ifstream & file_open, std::vecto
         //std::cout<< title<<std::endl<<std::endl;
         //std::cout << content <<std::endl<<std::endl;
 
-        ans.push_back(retrieval_data(dbindex, title, content, this->File_dir));
+        ans.push_back(RetrievalData(dbindex, title, content, this->File_dir));
         return true;
 }
 
@@ -75,7 +75,7 @@ void Parser::getDocuments(std::vector<RetrievalData> & ans) {
         /*for(int i = 0; i < 20; i++){
             get_nex_Document(cc, file_open, ans);
         }*/
-        while(get_nex_Document(file_open, ans)){
+        while(getNextDocument(file_open, ans)){
 
         }
         file_open.close();
