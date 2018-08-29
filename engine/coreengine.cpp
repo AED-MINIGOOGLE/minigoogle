@@ -34,7 +34,7 @@ search_result CoreEngine::search(string const& query) {
 void CoreEngine::process_file(string& filename) {
     ifstream file;
     file.open(filename.c_str(), ifstream::in);
-
+	int tmp;
 	Parser p(filename);
 	std::vector<RetrievalData> docs;
 	p.getDocuments(docs);
@@ -44,18 +44,19 @@ void CoreEngine::process_file(string& filename) {
 		//std::cout << doc.contain << std::endl;
 
 		int word_pos = 0;
-		char word[100];
-		memset(word, 0, 100 * sizeof(char));
+		char word[250];
+		memset(word, 0, 250 * sizeof(char));
 
 		for (unsigned i = 0; i < doc.contain.length(); ++i) {
 			if (isalpha(doc.contain.at(i))) {
 				word[word_pos++] = doc.contain.at(i);
+
 			}
 			else {
 				if (word_pos > 0) {
 					mMap.insert(word, doc.key, &filename);
 					word_pos = 0;
-					memset(word, 0, 100 * sizeof(char));
+					memset(word, 0, 250 * sizeof(char));
 				}
 			}
 		}

@@ -9,7 +9,8 @@ void CliApp::print(search_result result) {
         cout << "Not found." << endl;
     } else {
         for (auto &it : result) {
-            cout << (*(it.second)) << ": " << it.first << " results." << endl;
+			for (auto& m : it.first)
+            cout << (*(it.second)) << ": " << m.first << ", dbindex: " << m.second << " results." << endl;
         }
     }
 }

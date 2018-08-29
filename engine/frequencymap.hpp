@@ -6,7 +6,7 @@
 #include<vector>
 using namespace std;
 
-typedef vector<pair<int, string*>> search_result; 
+typedef vector<pair<map<int, int>, string*>> search_result;
 
 struct double_hash {
     uint64_t hash1;
@@ -21,6 +21,6 @@ public:
 private:
     const double_hash _hash(const char* const input) const;
 
-    map<double_hash, map<string*, int>> _map;
+    map<double_hash, map<string*, map<int, int>>> _map;
 };
 #endif
