@@ -21,10 +21,6 @@ vector<string> CoreEngine::populate(string const& dirname) {
 
     mFiles.insert(mFiles.end(), files.begin(), files.end());
 
-	for (auto file : files) {
-		std::cout << file << std::endl;
-	}
-
     for (auto iter = mFiles.end() - files.size(); iter != mFiles.end(); iter++) {
         process_file(*iter);
     }
@@ -43,9 +39,9 @@ void CoreEngine::process_file(string& filename) {
 	std::vector<RetrievalData> docs;
 	p.getDocuments(docs);
 	for (auto doc : docs) {
-		std::cout << doc.key << std::endl;
-		std::cout << doc.contain << std::endl;
 
+		//std::cout << doc.key << std::endl;
+		//std::cout << doc.contain << std::endl;
 
 		int word_pos = 0;
 		char word[100];
@@ -68,6 +64,8 @@ void CoreEngine::process_file(string& filename) {
 			mMap.insert(word, doc.key, &filename);
 
 	}
+
+	std::cout << "loaded: " << filename << std::endl;
 
     file.close();
 }

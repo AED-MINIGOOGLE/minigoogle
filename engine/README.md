@@ -1,24 +1,20 @@
-# Simple Search
+# MiniGoogle/Engine
 ## Installation
-The program comes in two flavors - a command line-version and a gui version.
+
 ### Dependencies
-First you must install `pkg-config` and `gtkmm 3.0` to build the application.
+First you must install `build-essential` to build the application.
 #### On Debian/Ubuntu 
 ```
-sudo apt-get install pkg-config libgtkmm-3.0-dev
+sudo apt-get install build-essential
 ```
 ### Building
 The application can be built using the Makefile.
 ```
-cd simple-search
+cd minigoogle/engine
 make
 ```
 ## Usage
-To run the command-line version, send in any arbitrary command line arguments.
-```
-./search --cli
-```
-To run the gui version, run the program *without* any command line arguments.
+To run the command-line version:
 ```
 ./search
 ```
