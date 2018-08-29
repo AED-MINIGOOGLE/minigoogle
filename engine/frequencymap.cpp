@@ -12,7 +12,7 @@ search_result FrequencyMap::search(string const& query) {
     return result;
 }
 
-void FrequencyMap::insert(char * const word, string * const index) {
+void FrequencyMap::insert(char * const word, const int key, string * const index) {
     word[0] = tolower(word[0]);
     _map[_hash(word)][index]++;
 }

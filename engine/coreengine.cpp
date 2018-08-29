@@ -1,8 +1,10 @@
-#include "coreengine.hpp"
-#include "utility.hpp"
+
 #include<fstream>
 #include<cstring>
 #include <iostream>
+#include "coreengine.hpp"
+#include "utility.hpp"
+#include "parser.hpp"
 
 using namespace std;
 
@@ -36,25 +38,36 @@ search_result CoreEngine::search(string const& query) {
 void CoreEngine::process_file(string& filename) {
     ifstream file;
     file.open(filename.c_str(), ifstream::in);
-	
-    int word_pos = 0;
-    char word[100];
-    memset(word, 0, 100 * sizeof(char));
 
-    for (char c = file.get(); file.good(); c = file.get()) {
-        if (isalpha(c)) {
-            word[word_pos++] = c;
-        } else {
-            if (word_pos > 0) {
-                mMap.insert(word, &filename);
-                word_pos = 0;
-                memset(word, 0, 100 * sizeof(char));
-            }
-        }
-    }
+	Parser p(filename);
+	std::vector<RetrievalData> docs;
+	p.getDocuments(docs);
+	for (auto doc : docs) {
+		std::cout << doc.key << std::endl;
+		std::cout << doc.contain << std::endl;
 
-    if(word_pos > 0)
-        mMap.insert(word, &filename);
+
+		int word_pos = 0;
+		char word[100];
+		memset(word, 0, 100 * sizeof(char));
+
+		for (unsigned i = 0; i < doc.contain.length(); ++i) {
+			if (isalpha(doc.contain.at(i))) {
+				word[word_pos++] = doc.contain.at(i);
+			}
+			else {
+				if (word_pos > 0) {
+					mMap.insert(word, doc.key, &filename);
+					word_pos = 0;
+					memset(word, 0, 100 * sizeof(char));
+				}
+			}
+		}
+
+		if (word_pos > 0)
+			mMap.insert(word, doc.key, &filename);
+
+	}
 
     file.close();
 }

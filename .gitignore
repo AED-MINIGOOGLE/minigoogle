@@ -271,3 +271,4 @@ build/
 engine/sample/
 engine/test/
 .vscode
+engine/search
