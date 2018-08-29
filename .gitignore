@@ -270,3 +270,4 @@ env
 build/
 engine/sample/
 engine/test/
+.vscode
