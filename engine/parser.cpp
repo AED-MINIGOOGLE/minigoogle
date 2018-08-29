@@ -57,6 +57,7 @@ bool Parser::getNextDocument(std::ifstream & file_open, std::vector<RetrievalDat
             if(!get_eo_doc(line) ){
                 if(line.substr(0,12) != "ENDOFARTICLE"){
                     content.append(line);
+                    content.append(" ");
                 }
             }
             else{
