@@ -6,12 +6,14 @@
 
 void CliApp::print(search_result result) {
 
+	int count = 0;
     if (result.size() <= 0) {
         cout << "Not found." << endl;
     } else {
 		
         for (auto &it : result) {
-			std::cout << engine.mDocs[it.second]->title << ": " << it.first << std::endl;
+			std::cout << "[" << count <<"] " << (*(engine.mDocs[it.second])).title << ": " << it.first << std::endl;
+			count++;
         }
     }
 }
@@ -21,8 +23,6 @@ int CliApp::run() {
     auto process = [this, &dirname]() {
         this->engine.populate(dirname);
     };
-
-	cout << "**************************** " << endl;
 
     cout << "**Took " << profile(process) << "us to build search index." << endl;
     string query;

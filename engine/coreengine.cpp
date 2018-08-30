@@ -37,7 +37,7 @@ void CoreEngine::process_file(string& filename) {
 	p.getDocuments(docs);
 	for (auto doc : docs) {
 		
-		mDocs[doc.db_index] = &doc;
+		mDocs[doc.db_index] = new RetrievalData(doc.db_index, doc.title, doc.contain, doc.file_location);
 		//std::cout << doc.db_index << std::endl;
 		//std::cout << doc.contain << std::endl;
 
@@ -63,5 +63,5 @@ void CoreEngine::process_file(string& filename) {
 
 	}
 
-	std::cout << "loaded: " << filename << std::endl;
+	//std::cout << "loaded: " << filename << std::endl;
 }
