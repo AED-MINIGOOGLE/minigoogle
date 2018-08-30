@@ -50,7 +50,7 @@
                   </div>
                   <div class="clearfix">
                     <div class="btn-toolbar">
-                      <button type="submit" style="padding-left:15%;padding-right:15%;" class="btn btn-default btn-sm pull-left" onclick="search()">Buscar</button>
+                      <button id="btnbuscar" type="button" style="padding-left:15%;padding-right:15%;" class="btn btn-default btn-sm pull-left" onclick="search()">Buscar</button>
                       <a href="/about" style="padding-left:15%;padding-right:15%;" class="btn btn-default btn-sm pull-right">Acerca de</a>
                     </div>
                   </div>
@@ -62,6 +62,18 @@
         </div>
       </main>
     </div>
+      <script>
+document.getElementById("btnbuscar").onclick = function() {myFunction()};
+
+function myFunction() {
+  var xhttp = new XMLHttpRequest();
+    var text = document.getElementById("usuario").value;
+    var postData = "{ \"query\": \"" + text + "\"}";
+    xhttp.open("POST", "http://localhost:8090/search", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(postData);
+}
+</script>
     <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
 
     <!--

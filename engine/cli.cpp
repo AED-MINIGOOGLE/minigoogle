@@ -117,7 +117,8 @@ search_result CliApp::SearchWeb(string query) {
         auto query_index = [this, &query, &result] () {
             result = this->engine.search(query);
         };
-        cout << "**Took " << profile(query_index) << "us to query tree." << endl;    
+        cout << "**Took " << profile(query_index) << "us to query tree." << endl;  
+		this->print(result,profile(query_index));  
     return result;
 }
 int CliApp::prueba(int n){
@@ -125,7 +126,7 @@ int CliApp::prueba(int n){
 }
 CliApp::CliApp(int argc, char **argv) {}
 CliApp::~CliApp() {}
-
+CliApp::CliApp() {}
 string CliApp::get_dir() {
     string dirname;
     cout << "Enter directory: ";

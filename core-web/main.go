@@ -13,7 +13,7 @@ const(
   Hostname = "localhost"
 // http
   Httpprotocol   = "http://"
-  ListenHTTP     = ":80"
+  ListenHTTP     = ":8080"
 // index paths
   Template_index = "index.html"
   Template_about = "templates/about.html"

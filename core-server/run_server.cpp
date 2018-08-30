@@ -67,15 +67,18 @@ int main() {
             query = pt.get<string>("query");
             cout << query << endl;
             search_result result = cli.SearchWeb(query);
-        
-            /*if (result.size() <= 0) {
-                cout << "Not found." << endl;
-            } else {
-                for (auto &it : result) {
-			        for (auto& m : it.first)
-                        cout << (*(it.second)) << ": " << m.first << ", dbindex: " << m.second << " results." << endl;
+            
+            /*if (result.size() <= 0) 
+                json_string = "{\"status\": false}";
+            else{
+                json_string = "{\"result\": ";
+                for(auto it : result){
+                    json_string += "[ \"id\": " + it.first + ", \"title\": " + cli->engine.mDoc;
+                    
                 }
             }*/
+
+
             //auto newcount = pt.get<string>("count");
             //count = stol(newcount);
             /*for (boost::property_tree::ptree::value_type& rowPair:pt.get_child("polygon")) {
@@ -90,7 +93,27 @@ int main() {
             }
             int identifier_polygon = count++;
             tree->insert(new Polygon<dtype>(pv, identifier_polygon));*/
-            json_string = "{\"status\": true}";
+
+            stream << json_string;
+            response->write_get(stream,header);
+        } catch (const exception &e) {
+            response->write(
+                SimpleWeb::StatusCode::client_error_bad_request,
+                e.what()
+            );
+        }
+    };
+
+    //Option rtree
+    server.resource["^/search$"]["OPTIONS"] = [](
+            shared_ptr<HttpServer::Response> response,
+            shared_ptr<HttpServer::Request> request
+        ) {
+        stringstream stream;
+        string json_string = "";
+        SimpleWeb::CaseInsensitiveMultimap header;
+        try {
+            json_string = "['status': true]";
             stream << json_string;
             response->write_get(stream,header);
         } catch (const exception &e) {
