@@ -5,12 +5,13 @@
 #include<algorithm>
 
 void CliApp::print(search_result result) {
+
     if (result.size() <= 0) {
         cout << "Not found." << endl;
     } else {
+		
         for (auto &it : result) {
-			for (auto& m : it.first)
-            cout << (*(it.second)) << ", dbindex: " << m.first << ": " << m.second << " results." << endl;
+			std::cout << engine.mDocs[it.second]->title << ": " << it.first << std::endl;
         }
     }
 }
