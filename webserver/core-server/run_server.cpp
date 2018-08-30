@@ -1,5 +1,8 @@
 #include "server_http.hpp"
+#include "../engine/cli.hpp"
+#include "../engine/utility.hpp"
 #include <iostream>
+#include <fstream>
 #include <typeinfo>
 #include <string>
 #include <utility>
@@ -28,6 +31,7 @@ int main() {
     server.config.port = 8090;
 
     int count = 1;
+    string query;
     //Get HTTP | get example 
     server.resource["^/example$"]["GET"] = [&count](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
         stringstream stream;
@@ -38,7 +42,7 @@ int main() {
     };
 
     //Post HTTP | post example
-    server.resource["^/example$"]["POST"] = [&count](
+    server.resource["^/search$"]["POST"] = [&query](
             shared_ptr<HttpServer::Response> response,
             shared_ptr<HttpServer::Request> request
         ) {
@@ -53,8 +57,25 @@ int main() {
             */
             ptree pt;
             read_json(request->content, pt);
-            auto newcount = pt.get<string>("count");
-            count = stol(newcount);
+            query = pt.get<string>("query");
+            CliApp cli;
+            /*vector<char> cquery;
+            for(auto s : query){
+                cquery.push_back(s);
+            }*/
+            int n = cli.prueba(3);
+            cout << n << endl;
+            /* auto result = cli.SearchWeb(query);            
+            if (result.size() <= 0) {
+                cout << "Not found." << endl;
+            } else {
+                for (auto &it : result) {
+			        for (auto& m : it.first)
+                        cout << (*(it.second)) << ": " << m.first << ", dbindex: " << m.second << " results." << endl;
+                }
+            }*/
+            //auto newcount = pt.get<string>("count");
+            //count = stol(newcount);
             /*for (boost::property_tree::ptree::value_type& rowPair:pt.get_child("polygon")) {
                 for (boost::property_tree::ptree::value_type& itemPair : rowPair.second) {
                     int value = itemPair.second.get_value<int>();

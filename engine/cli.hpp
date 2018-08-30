@@ -8,9 +8,12 @@ using namespace std;
 
 class CliApp {
 public:
+    CliApp();
     CliApp(int argc, char** argv);
     ~CliApp();
     int run();
+    search_result SearchWeb(string);
+    int prueba(int);
 private:
     string get_dir();
     void print(search_result result);
