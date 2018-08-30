@@ -95,7 +95,7 @@ int CliApp::run() {
 		cout << "Enter search query: ";
 		cin >> query;
 	}
-
+	result.clear();
     cout << "Exiting search engine...Done!" << endl;
     return 0;
 }
