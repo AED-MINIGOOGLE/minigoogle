@@ -3,7 +3,6 @@
 #include<cstdint>
 #include<unordered_map>
 #include<map>
-#include "frequencymap.hpp"
 #include<vector>
 #include<algorithm>
 #include<cstring>
@@ -28,6 +27,7 @@ private:
 
     map<double_hash, map<string*, map<int, int>>> _map;
 };
+
 search_result FrequencyMap::search(string const& query) {
     auto freqs = _map[_hash(query.c_str())];
     search_result result;

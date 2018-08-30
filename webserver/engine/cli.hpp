@@ -15,6 +15,7 @@ public:
     int run();
     search_result SearchWeb(string);
     int prueba(int);
+    int RunWeb();
 private:
     string get_dir();
     void print(search_result result);
@@ -62,13 +63,16 @@ int CliApp::run() {
     cout << "Exiting search engine...Done!" << endl;
     return 0;
 }
-
-search_result CliApp::SearchWeb(string query) {
+int CliApp::RunWeb(){
     string dirname = get_dir();
     auto process = [this, &dirname]() {
         this->engine.populate(dirname);
     };
+    profile(process);
+    return 0;
+}
 
+search_result CliApp::SearchWeb(string query) {
     search_result result;
     do {
         auto query_index = [this, &query, &result] () {
@@ -77,10 +81,10 @@ search_result CliApp::SearchWeb(string query) {
     } while (query != ":q");
     return result;
 }
+
 int CliApp::prueba(int n){
     return n;
 }
-
 
 string CliApp::get_dir() {
     string dirname;

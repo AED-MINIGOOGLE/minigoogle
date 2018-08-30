@@ -1,9 +1,7 @@
 #include "server_http.hpp"
-#include "engine/cli.hpp"
-#include "engine/utility.hpp"
-#include "engine/coreengine.hpp"
-#include "engine/frequencymap.hpp"
-#include "engine/parser.hpp"
+#include "../engine/cli.hpp"
+#include "../engine/utility.hpp"
+
 
 #include <iostream>
 #include <fstream>
@@ -37,6 +35,7 @@ int main() {
 
     int count = 1;
     string query;
+    cli.RunWeb();
     //Get HTTP | get example 
     server.resource["^/example$"]["GET"] = [&count](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
         stringstream stream;
