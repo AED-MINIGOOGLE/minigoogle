@@ -36,6 +36,9 @@ int main() {
     int count = 1;
     string query;
     cli.RunWeb();
+    
+    cout << "finish" << endl;
+    
     //Get HTTP | get example 
     server.resource["^/example$"]["GET"] = [&count](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
         stringstream stream;
@@ -62,16 +65,17 @@ int main() {
             ptree pt;
             read_json(request->content, pt);
             query = pt.get<string>("query");
-
-            auto result = cli.SearchWeb(query);            
-            if (result.size() <= 0) {
+            cout << query << endl;
+            search_result result = cli.SearchWeb(query);
+        
+            /*if (result.size() <= 0) {
                 cout << "Not found." << endl;
             } else {
                 for (auto &it : result) {
 			        for (auto& m : it.first)
                         cout << (*(it.second)) << ": " << m.first << ", dbindex: " << m.second << " results." << endl;
                 }
-            }
+            }*/
             //auto newcount = pt.get<string>("count");
             //count = stol(newcount);
             /*for (boost::property_tree::ptree::value_type& rowPair:pt.get_child("polygon")) {
