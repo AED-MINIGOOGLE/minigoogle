@@ -29,3 +29,47 @@ vector<string> list_immediate_files(string const& dirname) {
     return filenames;
 }
 
+bool specialChar(char& c) {
+
+	switch (c)
+	{
+		case 'á': 
+		case 'Á':
+		{
+			c = 'a';
+			return true;
+		}
+		case 'é': 
+		case 'É':
+		{
+			c = 'e';
+			return true;
+		}
+		case 'í':
+		case 'Í':
+		{
+			c = 'i';
+			return true;
+		}
+		case 'ó':
+		case 'Ó':
+		{
+			c = 'o';
+			return true;
+		}
+		case 'ú':
+		case 'Ú':
+		{
+			c = 'u';
+			return true;
+		}
+		case 'ñ':
+		case 'Ñ': 
+		{
+			c = 'ñ';
+			return true;
+		}
+	}
+
+	return false;
+}
