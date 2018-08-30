@@ -1,5 +1,5 @@
 CXX=g++
-INPUT=main.cpp 
+INPUT=main.cpp frequencymap.cpp cli.cpp coreengine.cpp utility.cpp parser.cpp
 CFLAGS=-std=c++11
 OUTPUT=search
 all:
