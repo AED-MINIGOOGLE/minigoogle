@@ -96,6 +96,7 @@ func HttpListenerServiceInit(){
   // router
   router := mux.NewRouter()
   router.HandleFunc("/", IndexHandler)
+  router.HandleFunc("/contact", ContactHandler)
   //router.NotFoundHandler = http.HandlerFunc(handlers.NotFoundHandler)
   
   muxHttp := http.NewServeMux()
