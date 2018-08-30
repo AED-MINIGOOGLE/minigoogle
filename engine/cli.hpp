@@ -16,7 +16,7 @@ public:
     int prueba(int);
 private:
     string get_dir();
-    void print(search_result result);
+    void print(search_result result, double time);
     vector<string> files;
     CoreEngine engine;
 };

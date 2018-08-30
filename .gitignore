@@ -273,3 +273,4 @@ engine/test/
 .vscode
 engine/search
 main
+engine/*.out
