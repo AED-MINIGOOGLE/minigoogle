@@ -7,4 +7,6 @@ using namespace std;
 
 double profile(function<void(void)> func);
 vector<string> list_immediate_files(string const& dirname);
+
+bool specialChar(char& c);
 #endif

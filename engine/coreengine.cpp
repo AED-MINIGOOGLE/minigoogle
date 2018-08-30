@@ -38,19 +38,20 @@ void CoreEngine::process_file(string& filename) {
 	for (auto doc : docs) {
 		
 		mDocs[doc.db_index] = new RetrievalData(doc.db_index, doc.title, doc.contain, doc.file_location);
-		//std::cout << doc.db_index << std::endl;
-		//std::cout << doc.contain << std::endl;
 
 		int word_pos = 0;
 		char word[147];
 		memset(word, 0, 147 * sizeof(char));
 
 		for (unsigned i = 0; i < doc.contain.length(); ++i) {
-			if (isalpha(doc.contain.at(i))) {
+			if (isalpha(doc.contain.at(i)) || specialChar(doc.contain.at(i))) {
 				word[word_pos++] = doc.contain.at(i);
 			}
 			else {
 				if (word_pos > 0) {
+					for (int i = 0; i < word_pos; ++i)
+						word[i] = tolower(word[i]);
+
 					mMap.insert(word, doc.db_index);
 					word_pos = 0;
 					memset(word, 0, 147 * sizeof(char));
@@ -63,5 +64,4 @@ void CoreEngine::process_file(string& filename) {
 
 	}
 
-	//std::cout << "loaded: " << filename << std::endl;
 }

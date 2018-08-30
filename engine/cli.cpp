@@ -91,7 +91,6 @@ int CliApp::run() {
 
 		print(result, profile(query_index));
 
-		std::cout << "\033[2J";
 		cout << "**Enter :q to stop at anytime.**" << endl;
 		cout << "Enter search query: ";
 		cin >> query;

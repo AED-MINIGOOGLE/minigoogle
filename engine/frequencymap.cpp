@@ -4,7 +4,7 @@
 #include <fstream>
 
 search_result FrequencyMap::search(string const& query) {
-    auto freqs = _map[_hash(query.c_str())];
+    auto freqs = _map[_hash2(query.c_str())];
     search_result result;
     for (auto& it : freqs) {
         result.push_back(make_pair(it.second, it.first));
@@ -14,8 +14,12 @@ search_result FrequencyMap::search(string const& query) {
 }
 
 void FrequencyMap::insert(char * const word, const int key) {
-    word[0] = tolower(word[0]);
-    _map[_hash(word)][key]++;
+    //word[0] = tolower(word[0]);
+    _map[_hash2(word)][key]++;
+}
+
+std::string FrequencyMap::_hash2(const char* word) {
+	return std::string(word);
 }
 
 const double_hash FrequencyMap::_hash(const char * const input) const {
