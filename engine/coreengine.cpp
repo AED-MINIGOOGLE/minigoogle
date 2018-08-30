@@ -34,7 +34,7 @@ search_result CoreEngine::search(string const& query) {
 void CoreEngine::process_file(string& filename) {
     ifstream file;
     file.open(filename.c_str(), ifstream::in);
-	int tmp;
+
 	Parser p(filename);
 	std::vector<RetrievalData> docs;
 	p.getDocuments(docs);
@@ -54,7 +54,7 @@ void CoreEngine::process_file(string& filename) {
 			}
 			else {
 				if (word_pos > 0) {
-					mMap.insert(word, doc.key, &filename);
+					mMap.insert(word, doc.db_index, &filename);
 					word_pos = 0;
 					memset(word, 0, 250 * sizeof(char));
 				}
@@ -62,7 +62,7 @@ void CoreEngine::process_file(string& filename) {
 		}
 
 		if (word_pos > 0)
-			mMap.insert(word, doc.key, &filename);
+			mMap.insert(word, doc.db_index, &filename);
 
 	}
 
