@@ -8,6 +8,7 @@ bool Parser::getHead(const std::string & s) {
 			return true;
 		}
 	}
+	return false;
 }
 
 bool Parser::get_eo_doc(const std::string & s) {
