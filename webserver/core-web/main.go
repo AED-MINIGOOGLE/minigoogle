@@ -16,6 +16,7 @@ const(
   ListenHTTP     = ":80"
 // index paths
   Template_index = "index.html"
+  Template_about = "templates/about.html"
 // directories
   css = "assets/css"
   depen = "assets/dependencies"
@@ -79,6 +80,13 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
   Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
 }
 
+func AboutHandler(w http.ResponseWriter, r *http.Request) {
+  start := time.Now()
+  LogServer(r.Method, r.URL.Path,"About")
+  p, _ := LoadPage(Template_about)
+  w.Write(p.Body)
+  Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
+}
 
 func MuxInitService(muxHttp *http.ServeMux){
   server := &http.Server{
@@ -96,7 +104,7 @@ func HttpListenerServiceInit(){
   // router
   router := mux.NewRouter()
   router.HandleFunc("/", IndexHandler)
-  router.HandleFunc("/contact", ContactHandler)
+  router.HandleFunc("/about", AboutHandler)
   //router.NotFoundHandler = http.HandlerFunc(handlers.NotFoundHandler)
   
   muxHttp := http.NewServeMux()
