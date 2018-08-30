@@ -44,9 +44,25 @@ int CliApp::run() {
     return 0;
 }
 
+search_result CliApp::SearchWeb(string query) {
+    string dirname = get_dir();
+    auto process = [this, &dirname]() {
+        this->engine.populate(dirname);
+    };
+
+    search_result result;
+    do {
+        auto query_index = [this, &query, &result] () {
+            result = this->engine.search(query);
+        };
+    } while (query != ":q");
+    return result;
+}
+int CliApp::prueba(int n){
+    return n;
+}
 CliApp::CliApp(int argc, char **argv) {}
 CliApp::~CliApp() {}
-
 
 string CliApp::get_dir() {
     string dirname;
