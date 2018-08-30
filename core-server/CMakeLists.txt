@@ -6,14 +6,18 @@ option(USE_STANDALONE_ASIO "set ON to use standalone Asio instead of Boost.Asio"
 option(BUILD_TESTING "set ON to build library tests" OFF)
 
 if(NOT MSVC)
-    add_compile_options( -std=c++11 -stdlib=libc++ -Wall -Wsign-conversion)
+    add_compile_options( -std=c++11 -Wall -Wsign-conversion)
 else()
     add_compile_options(/W1)
 endif()
 
+
+
 add_library(simple-web-server INTERFACE)
 
 target_include_directories(simple-web-server INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+
 
 find_package(Threads REQUIRED)
 target_link_libraries(simple-web-server INTERFACE ${CMAKE_THREAD_LIBS_INIT})
@@ -47,10 +51,9 @@ if(APPLE)
 endif()
 # If Simple-Web-Server is not a sub-project:
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
-    add_executable(run_server run_server.cpp)
+    add_executable(run_server run_server.cpp ../engine/cli.cpp ../engine/parser.cpp ../engine/coreengine.cpp ../engine/utility.cpp ../engine/frequencymap.cpp)
     target_link_libraries(run_server simple-web-server)
     find_package(Boost 1.53.0 COMPONENTS system thread filesystem REQUIRED)
     target_link_libraries(run_server ${Boost_LIBRARIES})
     target_include_directories(run_server PRIVATE ${Boost_INCLUDE_DIR})
 endif()
-

@@ -8,6 +8,7 @@ bool Parser::getHead(const std::string & s) {
 			return true;
 		}
 	}
+	return false;
 }
 
 bool Parser::get_eo_doc(const std::string & s) {
@@ -39,15 +40,7 @@ bool Parser::getNextDocument(std::ifstream & file_open, std::vector<RetrievalDat
         get_value_of("dbindex=",line,dbindex);
         std::string title;
         get_value_of("title=",line,title);
-        //Get Id of Document
-        /*std::size_t found = line.find("id=");
-        std::size_t start_pos = found + 3;
-        std::size_t found_start_number = line.find('"',start_pos)+1;
-        std::size_t found_finish_number = line.find('"',found_start_number);
-        std::string id_str = line.substr(found_start_number,found_finish_number-found_start_number);
-        */
-        //std::cout<<ccc<<""<<found<<std::endl;
-        //Get text of document
+
         std::string content = "";
         while(true){
             if(!std::getline(file_open, line))
@@ -62,8 +55,6 @@ bool Parser::getNextDocument(std::ifstream & file_open, std::vector<RetrievalDat
                 break;
             }
         }
-        //std::cout<< title<<std::endl<<std::endl;
-        //std::cout << content <<std::endl<<std::endl;
 
         ans.push_back(RetrievalData(dbindex, title, content, this->File_dir));
         return true;
@@ -71,9 +62,6 @@ bool Parser::getNextDocument(std::ifstream & file_open, std::vector<RetrievalDat
 
 void Parser::getDocuments(std::vector<RetrievalData> & ans) {
 	std::ifstream file_open(File_dir, std::ifstream::binary);
-        /*for(int i = 0; i < 20; i++){
-            get_nex_Document(cc, file_open, ans);
-        }*/
         while(getNextDocument(file_open, ans)){
 
         }

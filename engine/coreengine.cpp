@@ -4,7 +4,6 @@
 #include <iostream>
 #include "coreengine.hpp"
 #include "utility.hpp"
-#include "parser.hpp"
 
 using namespace std;
 
@@ -23,6 +22,7 @@ vector<string> CoreEngine::populate(string const& dirname) {
 
     for (auto iter = mFiles.end() - files.size(); iter != mFiles.end(); iter++) {
         process_file(*iter);
+		this->i++;
     }
     return files;
 }
@@ -32,41 +32,37 @@ search_result CoreEngine::search(string const& query) {
 }
 
 void CoreEngine::process_file(string& filename) {
-    ifstream file;
-    file.open(filename.c_str(), ifstream::in);
 
 	Parser p(filename);
 	std::vector<RetrievalData> docs;
 	p.getDocuments(docs);
 	for (auto doc : docs) {
-
-		//std::cout << doc.key << std::endl;
-		//std::cout << doc.contain << std::endl;
+		
+		mDocs[doc.db_index] = new RetrievalData(doc.db_index, doc.title, doc.contain, doc.file_location);
 
 		int word_pos = 0;
-		char word[250];
-		memset(word, 0, 250 * sizeof(char));
+		char word[147];
+		memset(word, 0, 147 * sizeof(char));
 
 		for (unsigned i = 0; i < doc.contain.length(); ++i) {
-			if (isalpha(doc.contain.at(i))) {
+			if (isalpha(doc.contain.at(i)) || specialChar(doc.contain.at(i))) {
 				word[word_pos++] = doc.contain.at(i);
-
 			}
 			else {
 				if (word_pos > 0) {
-					mMap.insert(word, doc.db_index, &filename);
+					for (int i = 0; i < word_pos; ++i)
+						word[i] = tolower(word[i]);
+
+					mMap.insert(word, doc.db_index);
 					word_pos = 0;
-					memset(word, 0, 250 * sizeof(char));
+					memset(word, 0, 147 * sizeof(char));
 				}
 			}
 		}
 
 		if (word_pos > 0)
-			mMap.insert(word, doc.db_index, &filename);
+			mMap.insert(word, doc.db_index);
 
 	}
 
-	std::cout << "loaded: " << filename << std::endl;
-
-    file.close();
 }

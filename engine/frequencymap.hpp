@@ -4,9 +4,10 @@
 #include<unordered_map>
 #include<map>
 #include<vector>
+#include<string>
 using namespace std;
 
-typedef vector<pair<map<int, int>, string*>> search_result;
+typedef vector<pair<int, int>> search_result;
 
 struct double_hash {
     uint64_t hash1;
@@ -17,10 +18,10 @@ struct double_hash {
 class FrequencyMap {
 public:
     search_result search(string const& query);
-    void insert(char * const word, const int key, string * const index);
+    void insert(char * const word, const int key);
 private:
-    const double_hash _hash(const char* const input) const;
-
-    map<double_hash, map<string*, map<int, int>>> _map;
+    const double_hash _hash(const char* input) const;
+	std::string _hash2(const char* word);
+    map<string, map<int, int>> _map;
 };
 #endif

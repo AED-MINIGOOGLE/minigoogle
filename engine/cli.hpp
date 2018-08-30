@@ -14,9 +14,10 @@ public:
     int run();
     search_result SearchWeb(string);
     int prueba(int);
+    void RunWeb();
 private:
     string get_dir();
-    void print(search_result result);
+    void print(search_result result, double time);
     vector<string> files;
     CoreEngine engine;
 };
