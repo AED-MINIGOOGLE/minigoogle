@@ -6,7 +6,7 @@ option(USE_STANDALONE_ASIO "set ON to use standalone Asio instead of Boost.Asio"
 option(BUILD_TESTING "set ON to build library tests" OFF)
 
 if(NOT MSVC)
-    add_compile_options( -std=c++11 -stdlib=libc++ -Wall -Wsign-conversion)
+    add_compile_options(-std=c++11 -Wall -Wsign-conversion)
 else()
     add_compile_options(/W1)
 endif()
@@ -53,4 +53,3 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     target_link_libraries(run_server ${Boost_LIBRARIES})
     target_include_directories(run_server PRIVATE ${Boost_INCLUDE_DIR})
 endif()
-

@@ -1,6 +1,10 @@
 #include "server_http.hpp"
-#include "../engine/cli.hpp"
-#include "../engine/utility.hpp"
+#include "engine/cli.hpp"
+#include "engine/utility.hpp"
+#include "engine/coreengine.hpp"
+#include "engine/frequencymap.hpp"
+#include "engine/parser.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <typeinfo>
@@ -27,6 +31,7 @@ using namespace boost::property_tree;
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
 int main() {
+    CliApp cli;
     HttpServer server;
     server.config.port = 8090;
 
@@ -42,7 +47,7 @@ int main() {
     };
 
     //Post HTTP | post example
-    server.resource["^/search$"]["POST"] = [&query](
+    server.resource["^/search$"]["POST"] = [&cli,&query](
             shared_ptr<HttpServer::Response> response,
             shared_ptr<HttpServer::Request> request
         ) {
@@ -58,14 +63,8 @@ int main() {
             ptree pt;
             read_json(request->content, pt);
             query = pt.get<string>("query");
-            CliApp cli;
-            /*vector<char> cquery;
-            for(auto s : query){
-                cquery.push_back(s);
-            }*/
-            int n = cli.prueba(3);
-            cout << n << endl;
-            /* auto result = cli.SearchWeb(query);            
+
+            auto result = cli.SearchWeb(query);            
             if (result.size() <= 0) {
                 cout << "Not found." << endl;
             } else {
@@ -73,7 +72,7 @@ int main() {
 			        for (auto& m : it.first)
                         cout << (*(it.second)) << ": " << m.first << ", dbindex: " << m.second << " results." << endl;
                 }
-            }*/
+            }
             //auto newcount = pt.get<string>("count");
             //count = stol(newcount);
             /*for (boost::property_tree::ptree::value_type& rowPair:pt.get_child("polygon")) {
