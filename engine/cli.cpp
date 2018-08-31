@@ -77,7 +77,7 @@ void CliApp::print(search_result& result, const double time) {
 	else {
 		std::cout << "About " << result.size() << " results (" << time << " s)" << std::endl;
 		for (auto &it : result) {
-			std::cout << "[" << count << "] " << (*(engine.mDocs[it.second])).title << ": " << it.first << std::endl;
+			std::cout << "[" << count << "] " << (*(engine.mDocs[it.second])).title << std::endl;
 			count++;
 
 			if (count % 20 == 0 && result.size() > count) {
