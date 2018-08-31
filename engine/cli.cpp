@@ -4,6 +4,9 @@
 #include<vector>
 #include<algorithm>
 
+CoreEngine CliApp::getEngine(){
+	return this->engine;
+}
 void CliApp::print(search_result result, double time) {
 
 	int count = 0;
@@ -118,7 +121,7 @@ search_result CliApp::SearchWeb(string query) {
             result = this->engine.search(query);
         };
         cout << "**Took " << profile(query_index) << "us to query tree." << endl;  
-		this->print(result,profile(query_index));  
+		//this->print(result,profile(query_index));  
     return result;
 }
 int CliApp::prueba(int n){

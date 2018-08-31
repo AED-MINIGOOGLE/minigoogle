@@ -15,10 +15,12 @@ public:
     search_result SearchWeb(string);
     int prueba(int);
     void RunWeb();
+    CoreEngine getEngine();
+    CoreEngine engine;
 private:
     string get_dir();
     void print(search_result result, double time);
     vector<string> files;
-    CoreEngine engine;
+
 };
 #endif
