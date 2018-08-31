@@ -22,12 +22,15 @@
               <i class="fa fa-circle text-warning"></i>
             </h4>
             <form name="form" role="form" >
-              {{ if not .Pages }}
-                <div class="form-group">
-                    <label><u>NOT FOUND</u></label>
-                  </div>
+                <div style="tetx-align:center;">
+                  <u>NOT FOUND</u>
+                </div>
+              {{ if not .Result }}
+                <div style="tetx-align:center;">
+                  <u>NOT FOUND</u>
+                </div>
               {{ else }}
-                {{ with .Pages }}
+                {{ with .Result }}
 			            {{ range . }}
               			<div class="form-group">
                       <label><u>{{.Title}}</u></label>
@@ -35,6 +38,9 @@
                     </div>
 			            {{ end }} 
               	{{ end }}
+              	
+              	
+              	
             	{{ end }}
               <div class="clearfix" style="padding:25px;text-align:center;">
                 <!--<button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary">Enviar</button> -->
@@ -45,7 +51,7 @@
         </div>
       </main>
       <footer class="page-footer" style="padding:25px;text-align:center;">
-        <p> <strong>Copyright &copy; 2018 ~ Didius</strong></p>
+        <p> <strong>Copyright &copy; 2018 ~ pocoSearch</strong></p>
       </footer>
     </div>
   </body>

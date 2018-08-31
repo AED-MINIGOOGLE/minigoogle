@@ -49,7 +49,7 @@ Logs is a library that offers a logger, with alert, warning, success and error m
 
 ### Setting up the service
 
-Once installed components, just run in `ED2018-MCS/website`:
+Once installed components, just run in `minigoogle/core-web`:
 
     go build main.go
     sudo ./main &
@@ -75,7 +75,7 @@ Then, go to `$HOME/go/src` and clone the project:
 
     git clone https://github.com/jeffersonquispe/ED2018-MCS.git
 
-Once installed components, just run in `ED2018-MCS/website`:
+Once installed components, just run in `minigoogle/core-web`:
 
     go build main.go
     sudo ./main &
