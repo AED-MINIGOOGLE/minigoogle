@@ -3,6 +3,8 @@ package main
 import (
   "time";
   "bytes";
+  "strconv";
+  "strings";
   "net/http";
   "io/ioutil";
   "encoding/json";
@@ -23,27 +25,40 @@ type SearchQuery struct{
   Query    string  `json:"query"`
 }
 
+type NewPageQuery struct{
+  State      int  `json:"state"`
+  IdRequest  int  `json:"idRequest"`
+  NroPage    int  `json:"nroPage"`
+}
+
 type FinishQuery struct{
   State      int  `json:"state"`
   IdRequest  int  `json:"idRequest"`
 }
 
 type Data struct {
-  Result    []DataFound  `json:"result"`
-  IdRequest int          `json:"idRequest"`
-  NroPages int           `json:"nroPages"`
+  Result     []DataFound  `json:"result"`
+  IdRequest  int          `json:"idRequest"`
+  NroPages   int          `json:"nroPages"`
 }
 
-var DataPages Data
+type DataToWeb struct {
+  Result     []DataFound  `json:"result"`
+  IdRequest  int          `json:"idRequest"`
+  NroPages   []int        `json:"nroPages"`
+}
+
+var DataPages DataToWeb
 var AuxIdRequest int = -1
 var WasQuery bool = false
+var SearchText string
 
 const(
 // hostnames
-  Hostname = "localhost"
+  Hostname = "pocosearch.fmorenovr.com"//"localhost"
 // http
   Httpprotocol   = "http://"
-  ListenHTTP     = ":8080"
+  ListenHTTP     = ":80"
 // index paths
   Template_index = "index.html"
   Template_about = "templates/about.html"
@@ -82,6 +97,14 @@ type Page struct {
   Body  []byte
 }
 
+func makeRange(min, max int) []int {
+  a := make([]int, max-min+1)
+  for i := range a {
+    a[i] = min + i
+  }
+  return a
+}
+
 func VerifyError(err error){
   if err !=nil {
     Logger.Error("%s",err)
@@ -103,20 +126,19 @@ func LogServer(method, path, name string){
   Logger.Info("Executing BeaGons "+name+" Handler")
 }
 
-func FromJSON(data []byte) (Data, error) {
+func FromJSON(data []byte) (DataToWeb, error) {
   elements := make(map[string]Data)
   err := json.Unmarshal(data, &elements)
-  return Data{Result: elements["data"].Result, IdRequest: elements["data"].IdRequest, NroPages: elements["data"].NroPages}, err
+  return DataToWeb{Result: elements["data"].Result, IdRequest: elements["data"].IdRequest, NroPages: makeRange(1,elements["data"].NroPages)}, err
 }
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
   r.ParseForm()
   start := time.Now()
-  
-  sq := SearchQuery{State: 0, Query: r.Form["search-text"][0]}
+  SearchText = strings.ToLower(r.Form["search-text"][0])
+  sq := SearchQuery{State: 0, Query: SearchText}
   jsonObj, _ := gojwt.ToJSON(sq)
   req, err := http.NewRequest("POST", "http://"+Hostname+":8090/search",  bytes.NewBuffer(jsonObj))
-  //rsp, _ := http.Post(Hostname+":8090/search", "application/x-www-form-urlencoded", jsonObj)
   if err!=nil{
     Logger.Error("Error: %s", err)
     return
@@ -130,10 +152,34 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
   }
   defer resp.Body.Close()
   body, _ :=ioutil.ReadAll(resp.Body)
-  Logger.Info("Response: %s", body)
-  
-  //body:="{ \"data\": { \"result\":[ { \"id\": 132, \"title\": \"titulo de documento...\", \"content\": \"Todo el contenido del documento.\" }, { \"id\": 2, \"title\": \"titulo de otro documento...\", \"content\": \"Todo el contenido de otro  documento.\" } ], \"idRequest\": 2 , \"nroPages\":10}}"
-  
+  DataPages, _ = FromJSON([]byte(body))
+  LogServer(r.Method, r.URL.Path,"Search")
+  Logger.Info("method: %s", r.Method)
+  Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
+  http.Redirect(w, r, "/pagesfound", http.StatusMovedPermanently)
+}
+
+func SearchPageHandler(w http.ResponseWriter, r *http.Request) {
+  r.ParseForm()
+  start := time.Now()
+  v, _ := strconv.ParseInt(r.Form["number"][0], 10, 64)
+  pageNum := int(v)
+  sq := NewPageQuery{State: 1, IdRequest: AuxIdRequest, NroPage: pageNum}
+  jsonObj, _ := gojwt.ToJSON(sq)
+  req, err := http.NewRequest("POST", "http://"+Hostname+":8090/search",  bytes.NewBuffer(jsonObj))
+  if err!=nil{
+    Logger.Error("Error: %s", err)
+    return
+  }
+  req.Header.Set("Content-Type", "application/json;application/x-www-form-urlencoded")
+  client := &http.Client{}
+  resp, err := client.Do(req)
+  if err!=nil{
+    Logger.Error("Error: %s", err)
+    return
+  }
+  defer resp.Body.Close()
+  body, _ :=ioutil.ReadAll(resp.Body)
   DataPages, _ = FromJSON([]byte(body))
   LogServer(r.Method, r.URL.Path,"Search")
   Logger.Info("method: %s", r.Method)
@@ -142,7 +188,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-  if WasQuery {
+  if WasQuery == true{
     sq := FinishQuery{State: 2, IdRequest: AuxIdRequest}
     jsonObj, _ := gojwt.ToJSON(sq)
     req, err := http.NewRequest("POST", "http://"+Hostname+":8090/search",  bytes.NewBuffer(jsonObj))
@@ -207,6 +253,7 @@ func HttpListenerServiceInit(){
   router.HandleFunc("/about", AboutHandler)
   router.HandleFunc("/pagesfound", PagesFoundHandler)
   router.HandleFunc("/search", SearchHandler).Methods("GET")
+  router.HandleFunc("/searchpage", SearchPageHandler).Methods("GET")
   
   //router.NotFoundHandler = http.HandlerFunc(handlers.NotFoundHandler)
   
