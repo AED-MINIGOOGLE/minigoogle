@@ -4,7 +4,7 @@
 #include<string>
 #include<vector>
 #include<map>
-#include "frequencymap.hpp"
+#include "invertedindex.hpp"
 #include "parser.hpp"
 
 class CoreEngine {
@@ -12,13 +12,13 @@ public:
     CoreEngine();
     ~CoreEngine();
     std::vector<std::string> populate(std::string const& dirname);
-    void search(std::string& query, std::map<int, int>& freqs);
+    void search(std::string& query, std::vector<std::map<int, int>>& freqs);
     int num_files();
     int i = 0;
 	std::map<int, RetrievalData*> mDocs;
 private:
     void process_file(std::string& filename);
-    FrequencyMap mMap;
+    InvertedIndex mMap;
     std::vector<std::string> mFiles;
 };
 #endif

@@ -51,7 +51,7 @@ if(APPLE)
 endif()
 # If Simple-Web-Server is not a sub-project:
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
-    add_executable(run_server run_server.cpp ../engine/cli.cpp ../engine/parser.cpp ../engine/coreengine.cpp ../engine/utility.cpp ../engine/frequencymap.cpp)
+    add_executable(run_server run_server.cpp ../engine/cli.cpp ../engine/parser.cpp ../engine/coreengine.cpp ../engine/utility.cpp ../engine/invertedindex.cpp)
     target_link_libraries(run_server simple-web-server)
     find_package(Boost 1.53.0 COMPONENTS system thread filesystem REQUIRED)
     target_link_libraries(run_server ${Boost_LIBRARIES})

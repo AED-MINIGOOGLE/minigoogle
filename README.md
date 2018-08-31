@@ -18,9 +18,9 @@ make
 ### Usage
 To run the command-line version:
 ```
-./search
+./engine
 ```
-###Web
+### Web
 #### Requirements
 ```sh
 Install brew

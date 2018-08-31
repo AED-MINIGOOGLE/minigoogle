@@ -1,5 +1,5 @@
-#ifndef __FREQUENCY_MAP__HPP__
-#define __FREQUENCY_MAP__HPP__
+#ifndef __INVERTED_INDEX__HPP__
+#define __INVERTED_INDEX__HPP__
 
 #include<map>
 #include<vector>
@@ -7,15 +7,9 @@
 
 typedef std::vector<std::pair<int, int>> search_result;
 
-struct double_hash {
-    uint64_t hash1;
-    uint64_t hash2;
-    const bool operator<(double_hash const& b) const;
-};
-
-class FrequencyMap {
+class InvertedIndex {
 public:
-	void search(std::string& query, std::map<int, int>& freqs);
+	void search(std::string& query, std::vector<std::map<int, int>>& freqs);
     void insert(std::string& contain, const int key);
 private:
 	std::string _hash(const char* word);
