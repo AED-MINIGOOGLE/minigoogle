@@ -3,10 +3,9 @@
 #include<vector>
 #include<functional>
 #include<string>
-using namespace std;
 
-double profile(function<void(void)> func);
-vector<string> list_immediate_files(string const& dirname);
+double profile(std::function<void(void)> func);
+std::vector<std::string> list_immediate_files(std::string const& dirname);
 
 bool specialChar(char& c);
 #endif
