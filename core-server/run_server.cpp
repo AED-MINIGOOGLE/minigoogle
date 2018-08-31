@@ -44,7 +44,7 @@ int main() {
     
     cout << "finish" << endl;
     map<int, search_result> responses;
-    //vector<search_result> responses;
+
     //Get HTTP | get example 
     server.resource["^/example$"]["GET"] = [&count](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
         stringstream stream;
@@ -54,7 +54,7 @@ int main() {
         response->write_get(stream,header);
     };
 
-    //Post HTTP | post example
+    //Post HTTP | post Search
     server.resource["^/search$"]["POST"] = [&responses,&cli,&query,&count](
             shared_ptr<HttpServer::Response> response,
             shared_ptr<HttpServer::Request> request
@@ -63,11 +63,6 @@ int main() {
         string json_string = "";
         SimpleWeb::CaseInsensitiveMultimap header;
         try {
-            /*
-            * ENVIAR JSON: {
-            *   'count': 3
-            * }
-            */
             ptree pt;
             read_json(request->content, pt);
             cout << pt.get<int>("state") << endl;
@@ -77,8 +72,12 @@ int main() {
                 search_result result = cli.SearchWeb(query);
                 responses.insert(std::pair<int,search_result>(count, result));
 
-                if (result.size() <= 0) 
-                    json_string = "{\"status\": false}";
+                if (result.size() <= 0){
+                    json_string = "{\"data\": {\"result\": [], \"idRequest\": -2, \"nroPages\": 0 }}";
+                    stream << json_string;
+                    json_string = "";
+                    response->write_get(stream,header); 
+                }
                 else{
                     json_string = "{\"data\": { \"result\": [";
                     int c = 0;
@@ -112,23 +111,31 @@ int main() {
                 if(current_result.size() <= 20) nroPages = 1;
                 else nroPages = current_result.size() / 20;
                 json_string = "{\"data\": { \"result\": [";
-                for(int i = 20*(stoi(nroPage)-1);i<20*stoi(nroPage);i++){
-                    if(i >= current_result.size()){
-                        break;
-                    }
-                    string contain = cli.engine.mDocs[current_result[i].second]->contain;
-                    string title = cli.engine.mDocs[current_result[i].second]->title;
-                    cout << title << endl;
-                    contain = escapeJsonString(contain);
-                    title = escapeJsonString(title);
-                    json_string += "{ \"id\":\"" + to_string(current_result[i].second) + "\", \"title\": \"" + title + "\", \"content\":\"" + contain + "\"},"; 
-                }
-                    json_string.pop_back();
-                    json_string += "], \"idRequest\": " + to_string(id) + ", \"nroPages\": " + to_string(nroPages) + "}}";
-                    //cout << json_string << endl;
+                if(20*(stoi(nroPage)-1)>=current_result.size()){
+                    json_string = "{\"data\": {\"result\": [], \"idRequest\": -2, \"nroPages\": 0 }}";
                     stream << json_string;
                     json_string = "";
                     response->write_get(stream,header);
+                }
+                else{
+                    for(int i = 20*(stoi(nroPage)-1);i<20*stoi(nroPage);i++){
+                        if(i >= current_result.size()){
+                            break;
+                        }
+                        string contain = cli.engine.mDocs[current_result[i].second]->contain;
+                        string title = cli.engine.mDocs[current_result[i].second]->title;
+                        cout << title << endl;
+                        contain = escapeJsonString(contain);
+                        title = escapeJsonString(title);
+                        json_string += "{ \"id\":\"" + to_string(current_result[i].second) + "\", \"title\": \"" + title + "\", \"content\":\"" + contain + "\"},"; 
+                    }
+                    json_string.pop_back();
+                    json_string += "], \"idRequest\": " + to_string(id) + ", \"nroPages\": " + to_string(nroPages) + "}}";
+                    
+                    stream << json_string;
+                    json_string = "";
+                    response->write_get(stream,header);
+                }
             }
             else{
                 int id = pt.get<int>("idRequest");
@@ -137,43 +144,6 @@ int main() {
                 stream << json_string;
                 response->write_get(stream,header);
             }
-
- 
-            /*if (result.size() <= 0) 
-                json_string = "{\"status\": false}";
-            else{
-                json_string = "{\"data\": ";
-                for(auto &it : result){
-                    count++;
-                    json_string += "[ \"id\": " + to_string(it.second) + ", \"title\": " + cli.engine.mDocs[it.second]->title + ", \"content\": " +  cli.engine.mDocs[it.second]->contain + "],"; 
-                    if (count % 20 == 0 && result.size()>count) {
-					        break;
-                    }
-                }
-                json_string.pop_back();
-                json_string += " }";
-                response->write_get(stream,header);                
-            }
-            json_string.pop_back();
-            json_string += " }";
-            cout << json_string << endl;
-
-            //auto newcount = pt.get<string>("count");
-            //count = stol(newcount);
-            for (boost::property_tree::ptree::value_type& rowPair:pt.get_child("polygon")) {
-                for (boost::property_tree::ptree::value_type& itemPair : rowPair.second) {
-                    int value = itemPair.second.get_value<int>();
-                    v.push_back(value);
-                }
-            }
-            for (size_t i = 0; i < v.size(); i += 2) {
-                P point(v[i], v[i+1]);
-                pv.push_back(point);
-            }
-            int identifier_polygon = count++;
-            tree->insert(new Polygon<dtype>(pv, identifier_polygon));
-            stream << json_string;
-            response->write_get(stream,header);*/
         } catch (const exception &e) {
             response->write(
                 SimpleWeb::StatusCode::client_error_bad_request,
@@ -202,8 +172,6 @@ int main() {
         }
     };
 
-    //
-    //Option rtree
     server.resource["^/example$"]["OPTIONS"] = [](
             shared_ptr<HttpServer::Response> response,
             shared_ptr<HttpServer::Request> request
