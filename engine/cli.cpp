@@ -1,14 +1,14 @@
-#include "cli.hpp"
-#include "utility.hpp"
 #include<iostream>
 #include<vector>
 #include<algorithm>
+#include "cli.hpp"
+#include "utility.hpp"
 
 CoreEngine CliApp::getEngine(){
 	return this->engine;
 }
 
-void CliApp::print(const map<int, int>& freqs, const double time) {
+void CliApp::print(const std::map<int, int>& freqs, const double time) {
 
 	search_result result;
 
@@ -16,17 +16,17 @@ void CliApp::print(const map<int, int>& freqs, const double time) {
 
 	int count = 0;
     if (result.size() <= 0) {
-        cout << "Not found." << endl;
+		std::cout << "Not found." << std::endl;
     } else {
-		std::cout << "About " << result.size() << " results (" << time << " us)" << std::endl;
+		std::cout << "About " << result.size() << " results (" << time << " s)" << std::endl;
         for (auto &it : result) {
 			std::cout << "[" << count <<"] " << (*(engine.mDocs[it.second])).title << ": " << it.first << std::endl;
 			count++;
 
 			if (count % 20 == 0 && result.size()>count) {
-				string answer;
+				std::string answer;
 				std::cout << "Press (n) for show nex documents, (number) for show the document complete or (q) for nex query" << std::endl;
-				cin >> answer;
+				std::cin >> answer;
 				std::cout << "\033[2J";
 
 				if (answer == "n")
@@ -53,9 +53,9 @@ void CliApp::print(const map<int, int>& freqs, const double time) {
 			}
         }
 
-		string answer;
+		std::string answer;
 		std::cout << "Press (number) for show the document complete or (q) for nex query" << std::endl;
-		cin >> answer;
+		std::cin >> answer;
 		std::cout << "\033[2J";
 
 		if (answer == "q")
@@ -78,22 +78,22 @@ void CliApp::print(const map<int, int>& freqs, const double time) {
 }
 
 int CliApp::run() {
-    string dirname = get_dir();
+	std::string dirname = get_dir();
     auto process = [this, &dirname]() {
         this->engine.populate(dirname);
     };
 
 	double time = profile(process);
-    cout << "\n... Loading index done! \nTook " << time / 10e6 << " s to build search index." << endl;
-    string query;
+	std::cout << "\n... Loading index done! \nTook " << time << " s to build search index." << std::endl;
+	std::string query;
     
     
-	cout << "\n**Enter :q to stop at anytime.**" << endl;
-    cout << "Enter search query: ";
-    cin >> query;
+	std::cout << "\n**Enter :q to stop at anytime.**" << std::endl;
+	std::cout << "Enter search query: ";
+	std::cin >> query;
 
     while (query != ":q") {
-		map<int, int> freqs;
+		std::map<int, int> freqs;
 
 		auto query_index = [this, &query, &freqs]() {
 			this->engine.search(query, freqs);
@@ -104,38 +104,38 @@ int CliApp::run() {
 		print(freqs, time);
 
 		freqs.clear();
-		cout << "**Enter :q to stop at anytime.**" << endl;
-		cout << "Enter search query: ";
-		cin >> query;
+		std::cout << "**Enter :q to stop at anytime.**" << std::endl;
+		std::cout << "Enter search query: ";
+		std::cin >> query;
 	}
 	
-    cout << "Exiting search engine...Done!" << endl;
+	std::cout << "Exiting search engine...Done!" << std::endl;
     return 0;
 }
 
-void CliApp::sortMap(const map<int,int>& freqs, search_result& result) {
+void CliApp::sortMap(const std::map<int,int>& freqs, search_result& result) {
 	for (auto& it : freqs) {
-		result.push_back(make_pair(it.second, it.first));
+		result.push_back(std::make_pair(it.second, it.first));
 	}
 	stable_sort(result.rbegin(), result.rend());
 }
 
 void CliApp::RunWeb(){
-    string dirname = get_dir();
-    vector<string> res;
+	std::string dirname = get_dir();
+	std::vector<std::string> res;
     auto process = [this, &dirname,&res]() {
         res = this->engine.populate(dirname);
     };
-    cout << res.size() << endl;
-    cout << "**Took " << profile(process) / 10e6 << "s to build search index." << endl;
+	std::cout << res.size() << std::endl;
+	std::cout << "**Took " << profile(process) << "s to build search index." << std::endl;
 
 }
 
-search_result CliApp::SearchWeb(string query) {
+search_result CliApp::SearchWeb(std::string query) {
     search_result result;
-	map<int, int> freqs;
+	std::map<int, int> freqs;
     
-	cout << this->engine.i << endl;
+	std::cout << this->engine.i << std::endl;
 
     auto query_index = [this, &query, &freqs] () {
         this->engine.search(query, freqs);
@@ -155,10 +155,10 @@ int CliApp::prueba(int n){
 CliApp::CliApp(int argc, char **argv) {}
 CliApp::~CliApp() {}
 CliApp::CliApp() {}
-string CliApp::get_dir() {
-    string dirname;
-    cout << "Enter directory: ";
-    getline(cin, dirname);
-    cout << "Processing directory at " << dirname << endl;
+std::string CliApp::get_dir() {
+	std::string dirname;
+	std::cout << "Enter directory: ";
+    getline(std::cin, dirname);
+	std::cout << "Processing directory at " << dirname << std::endl;
     return dirname;
 }

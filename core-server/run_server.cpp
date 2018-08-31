@@ -28,6 +28,11 @@ using namespace std;
 using namespace boost::property_tree;
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
+struct ResponseStruct{
+    search_result response;
+    bool is_busy;
+    ResponseStruct(search_result _sr, bool _ib):response(_sr), is_busy(_ib){};
+};
 int main() {
     CliApp cli;
     HttpServer server;
@@ -38,7 +43,8 @@ int main() {
     cli.RunWeb();
     
     cout << "finish" << endl;
-    vector<search_result> responses;
+    map<int, search_result> responses;
+    //vector<search_result> responses;
     //Get HTTP | get example 
     server.resource["^/example$"]["GET"] = [&count](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
         stringstream stream;
@@ -69,7 +75,7 @@ int main() {
             if(pt.get<int>("state") == 0){
                 query = pt.get<string>("query");
                 search_result result = cli.SearchWeb(query);
-                responses.push_back(result);
+                responses.insert(std::pair<int,search_result>(count, result));
 
                 if (result.size() <= 0) 
                     json_string = "{\"status\": false}";
@@ -101,7 +107,7 @@ int main() {
             else if(pt.get<int>("state") == 1){
                 int id = pt.get<int>("idRequest");
                 string nroPage = pt.get<string>("nroPage");
-                search_result current_result = responses[id];
+                search_result current_result = responses.find(id)->second;
                 json_string = "{\"data\": { \"result\": [";
                 for(int i = 20*(stoi(nroPage)-1);i<20*stoi(nroPage);i++){
                     if(i >= current_result.size()){
@@ -123,8 +129,7 @@ int main() {
             }
             else{
                 int id = pt.get<int>("idRequest");
-                vector<search_result>::iterator nth = responses.begin() + id;
-                responses.erase(nth);
+                responses.erase(id);
                 json_string = "{ \"state\": true}";
                 stream << json_string;
                 response->write_get(stream,header);

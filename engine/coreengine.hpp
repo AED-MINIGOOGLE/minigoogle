@@ -7,21 +7,19 @@
 #include "frequencymap.hpp"
 #include "parser.hpp"
 
-using namespace std;
-
 class CoreEngine {
 public:
     CoreEngine();
     ~CoreEngine();
-    vector<string> populate(string const& dirname);
-    void search(string const& query, map<int, int>& freqs);
+    std::vector<std::string> populate(std::string const& dirname);
+    void search(std::string const& query, std::map<int, int>& freqs);
     int num_files();
     int i = 0;
-	map<int, RetrievalData*> mDocs;
+	std::map<int, RetrievalData*> mDocs;
 private:
-    void process_file(string& filename);
+    void process_file(std::string& filename);
     FrequencyMap mMap;
-    vector<string> mFiles;
+    std::vector<std::string> mFiles;
 };
 #endif
 
