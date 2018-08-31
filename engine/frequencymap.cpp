@@ -1,37 +1,53 @@
 #include<cstring>
+#include "utility.hpp"
 #include "frequencymap.hpp"
 
-void FrequencyMap::search(const std::string& query, std::map<int, int>& freqs) {
-   
-	freqs = _map[query];
+void FrequencyMap::search(std::string& query, std::map<int, int>& freqs) {
 
+	int word_pos = 0;
+	char word[147];
+	memset(word, 0, 147 * sizeof(char));
+
+	for (unsigned i = 0; i < query.length(); ++i) {
+		if (isalpha(query.at(i)) || validSpecialChar(query.at(i))) {
+			word[word_pos++] = tolower(query.at(i));
+		}
+		else {
+			if (word_pos > 0) {
+				freqs = _map[_hash(word)];
+				word_pos = 0;
+				memset(word, 0, 147 * sizeof(char));
+			}
+		}
+	}
+
+	if (word_pos > 0)
+		freqs = _map[_hash(word)];
 }
 
-void FrequencyMap::insert(const char * word, const int key) {
-    _map[_hash2(word)][key]++;
+void FrequencyMap::insert(std::string& contain, const int key) {
+
+	int word_pos = 0;
+	char word[147];
+	memset(word, 0, 147 * sizeof(char));
+
+	for (unsigned i = 0; i < contain.length(); ++i) {
+		if (isalpha(contain.at(i)) || validSpecialChar(contain.at(i))) {
+			word[word_pos++] = tolower(contain.at(i));
+		}
+		else {
+			if (word_pos > 0) {
+				_map[_hash(word)][key]++;
+				word_pos = 0;
+				memset(word, 0, 147 * sizeof(char));
+			}
+		}
+	}
+
+	if (word_pos > 0)
+		_map[_hash(word)][key]++;
 }
 
-std::string FrequencyMap::_hash2(const char* word) {
+std::string FrequencyMap::_hash(const char* word) {
 	return std::string(word);
 }
-
-const double_hash FrequencyMap::_hash(const char * const input) const {
-    uint64_t h2 = 0;
-    union { uint64_t h1; uint64_t u[8]; };
-    const char* str = input;
-    h1 = strlen(str);
-    for (int i = 0; *str; i++, str++) {
-        u[i % 8] += *str + i + (*str >> ((h1 / (i + 1)) % 5));
-        h2 += *str;
-    }
-    return {h1, h2};
-}
-
-const bool double_hash::operator<(double_hash const& b) const {
-    if (this->hash1 < b.hash1) return true;
-    if (this->hash1 > b.hash1) return false;
-    if (this->hash2 < b.hash2) return true;
-    if (this->hash2 > b.hash2) return false;
-    return false;
-};
-

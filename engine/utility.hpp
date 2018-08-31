@@ -7,5 +7,5 @@
 double profile(std::function<void(void)> func);
 std::vector<std::string> list_immediate_files(std::string const& dirname);
 
-bool specialChar(char& c);
+bool validSpecialChar(char& c);
 #endif

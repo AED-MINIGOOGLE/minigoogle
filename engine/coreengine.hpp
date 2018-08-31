@@ -12,7 +12,7 @@ public:
     CoreEngine();
     ~CoreEngine();
     std::vector<std::string> populate(std::string const& dirname);
-    void search(std::string const& query, std::map<int, int>& freqs);
+    void search(std::string& query, std::map<int, int>& freqs);
     int num_files();
     int i = 0;
 	std::map<int, RetrievalData*> mDocs;

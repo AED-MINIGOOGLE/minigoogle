@@ -15,11 +15,10 @@ struct double_hash {
 
 class FrequencyMap {
 public:
-	void search(const std::string& query, std::map<int, int>& freqs);
-    void insert(const char * word, const int key);
+	void search(std::string& query, std::map<int, int>& freqs);
+    void insert(std::string& contain, const int key);
 private:
-    const double_hash _hash(const char* input) const;
-	std::string _hash2(const char* word);
+	std::string _hash(const char* word);
 	std::map<std::string, std::map<int, int>> _map;
 };
 #endif

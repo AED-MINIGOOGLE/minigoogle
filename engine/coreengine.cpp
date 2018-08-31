@@ -1,8 +1,5 @@
-
-#include<cstring>
-#include "coreengine.hpp"
 #include "utility.hpp"
-
+#include "coreengine.hpp"
 
 CoreEngine::CoreEngine() {}
 
@@ -24,7 +21,7 @@ std::vector<std::string> CoreEngine::populate(std::string const& dirname) {
     return files;
 }
 
-void CoreEngine::search(std::string const& query, std::map<int, int>& freqs) {
+void CoreEngine::search(std::string& query, std::map<int, int>& freqs) {
     mMap.search(query, freqs);
 }
 
@@ -34,32 +31,7 @@ void CoreEngine::process_file(std::string& filename) {
 	std::vector<RetrievalData> docs;
 	p.getDocuments(docs);
 	for (auto doc : docs) {
-		
 		mDocs[doc.db_index] = new RetrievalData(doc.db_index, doc.title, doc.contain, doc.file_location);
-
-		int word_pos = 0;
-		char word[147];
-		memset(word, 0, 147 * sizeof(char));
-
-		for (unsigned i = 0; i < doc.contain.length(); ++i) {
-			if (isalpha(doc.contain.at(i)) || specialChar(doc.contain.at(i))) {
-				word[word_pos++] = doc.contain.at(i);
-			}
-			else {
-				if (word_pos > 0) {
-					for (int i = 0; i < word_pos; ++i)
-						word[i] = tolower(word[i]);
-
-					mMap.insert(word, doc.db_index);
-					word_pos = 0;
-					memset(word, 0, 147 * sizeof(char));
-				}
-			}
-		}
-
-		if (word_pos > 0)
-			mMap.insert(word, doc.db_index);
-
+		mMap.insert(doc.contain, doc.db_index);
 	}
-
 }

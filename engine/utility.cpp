@@ -28,7 +28,7 @@ std::vector<std::string> list_immediate_files(std::string const& dirname) {
     return filenames;
 }
 
-bool specialChar(char& c) {
+bool validSpecialChar(char& c) {
 
 	switch (c)
 	{
