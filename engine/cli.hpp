@@ -1,10 +1,8 @@
 #ifndef __CLI__HPP__
 #define __CLI__HPP__
+#include<string>
 #include "coreengine.hpp"
 #include "frequencymap.hpp"
-#include<string>
-
-using namespace std;
 
 class CliApp {
 public:
@@ -12,14 +10,14 @@ public:
     CliApp(int argc, char** argv);
     ~CliApp();
     int run();
-    search_result SearchWeb(string);
-	void sortMap(const map<int, int>& freqs, search_result& result);
+    search_result SearchWeb(std::string);
+	void sortMap(const std::map<int, int>& freqs, search_result& result);
     int prueba(int);
     void RunWeb();
 private:
-    string get_dir();
-    void print(const map<int, int>& freqs, const double time);
-    vector<string> files;
+	std::string get_dir();
+    void print(const std::map<int, int>& freqs, const double time);
+	std::vector<std::string> files;
     CoreEngine engine;
 };
 #endif

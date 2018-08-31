@@ -1,11 +1,8 @@
 
-#include<fstream>
 #include<cstring>
-#include <iostream>
 #include "coreengine.hpp"
 #include "utility.hpp"
 
-using namespace std;
 
 CoreEngine::CoreEngine() {}
 
@@ -15,8 +12,8 @@ int CoreEngine::num_files() {
     return mFiles.size();
 }
 
-vector<string> CoreEngine::populate(string const& dirname) {
-    vector<string> files = list_immediate_files(dirname);
+std::vector<std::string> CoreEngine::populate(std::string const& dirname) {
+    std::vector<std::string> files = list_immediate_files(dirname);
 
     mFiles.insert(mFiles.end(), files.begin(), files.end());
 
@@ -27,11 +24,11 @@ vector<string> CoreEngine::populate(string const& dirname) {
     return files;
 }
 
-void CoreEngine::search(string const& query, map<int, int>& freqs) {
+void CoreEngine::search(std::string const& query, std::map<int, int>& freqs) {
     mMap.search(query, freqs);
 }
 
-void CoreEngine::process_file(string& filename) {
+void CoreEngine::process_file(std::string& filename) {
 
 	Parser p(filename);
 	std::vector<RetrievalData> docs;

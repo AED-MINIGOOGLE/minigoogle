@@ -1,22 +1,13 @@
-#include "frequencymap.hpp"
-#include<algorithm>
 #include<cstring>
-#include <fstream>
+#include "frequencymap.hpp"
 
-#include<chrono>
-#include<cerrno>
-#include<dirent.h>
-#include<iostream>
-
-using namespace std::chrono;
-
-void FrequencyMap::search(string const& query, map<int, int>& freqs) {
+void FrequencyMap::search(const std::string& query, std::map<int, int>& freqs) {
    
 	freqs = _map[query];
 
 }
 
-void FrequencyMap::insert(char * const word, const int key) {
+void FrequencyMap::insert(const char * word, const int key) {
     _map[_hash2(word)][key]++;
 }
 

@@ -5,15 +5,15 @@
 
 using namespace std::chrono;
 
-double profile(function<void(void)> func) {
+double profile(std::function<void(void)> func) {
     auto start = high_resolution_clock::now();
     func();
     auto finish = high_resolution_clock::now();
-	return duration_cast<nanoseconds>(finish - start).count() / 10e3;
+	return duration_cast<duration<double>>(finish - start).count();
 }
 
-vector<string> list_immediate_files(string const& dirname) {
-    vector<string> filenames;
+std::vector<std::string> list_immediate_files(std::string const& dirname) {
+	std::vector<std::string> filenames;
     DIR *target = opendir(dirname.c_str());
     if (target != NULL) {
         for (dirent *entry = readdir(target); 
@@ -21,7 +21,7 @@ vector<string> list_immediate_files(string const& dirname) {
              entry = readdir(target)) {
             if (entry->d_name[0] == '.' ||
                 (entry->d_type & DT_DIR)) continue;
-            filenames.push_back(dirname + "/" + string(entry->d_name));
+            filenames.push_back(dirname + "/" + std::string(entry->d_name));
         }
         closedir(target);
     }
