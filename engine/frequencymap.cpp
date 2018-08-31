@@ -3,18 +3,20 @@
 #include<cstring>
 #include <fstream>
 
-search_result FrequencyMap::search(string const& query) {
-    auto freqs = _map[_hash2(query.c_str())];
-    search_result result;
-    for (auto& it : freqs) {
-        result.push_back(make_pair(it.second, it.first));
-    }
-    stable_sort(result.rbegin(), result.rend());
-    return result;
+#include<chrono>
+#include<cerrno>
+#include<dirent.h>
+#include<iostream>
+
+using namespace std::chrono;
+
+void FrequencyMap::search(string const& query, map<int, int>& freqs) {
+   
+	freqs = _map[query];
+
 }
 
 void FrequencyMap::insert(char * const word, const int key) {
-    //word[0] = tolower(word[0]);
     _map[_hash2(word)][key]++;
 }
 

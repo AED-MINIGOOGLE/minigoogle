@@ -17,7 +17,7 @@ struct double_hash {
 
 class FrequencyMap {
 public:
-    search_result search(string const& query);
+	void search(string const& query, map<int, int>& freqs);
     void insert(char * const word, const int key);
 private:
     const double_hash _hash(const char* input) const;

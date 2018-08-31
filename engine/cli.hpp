@@ -13,11 +13,12 @@ public:
     ~CliApp();
     int run();
     search_result SearchWeb(string);
+	void sortMap(const map<int, int>& freqs, search_result& result);
     int prueba(int);
     void RunWeb();
 private:
     string get_dir();
-    void print(search_result result, double time);
+    void print(const map<int, int>& freqs, const double time);
     vector<string> files;
     CoreEngine engine;
 };
