@@ -65,6 +65,7 @@ int main() {
             ptree pt;
             read_json(request->content, pt);
             cout << pt.get<int>("state") << endl;
+            int nroPages;
             if(pt.get<int>("state") == 0){
                 query = pt.get<string>("query");
                 search_result result = cli.SearchWeb(query);
@@ -87,8 +88,10 @@ int main() {
                             break;
                         }
                     }
+                    if(result.size() <= 20) nroPages = 1;
+                    else nroPages = result.size() / 20;
                     json_string.pop_back();
-                    json_string += "], \"idRequest\": " + to_string(count) + " }}";
+                    json_string += "], \"idRequest\": " + to_string(count) + ", \"nroPages\": " + to_string(nroPages) + "}}";
                     count++;
                     stream << json_string;
                     json_string = "";

@@ -274,3 +274,4 @@ engine/test/
 engine/search
 main
 engine/*.out
+core-server/build/raw
