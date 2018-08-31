@@ -107,7 +107,10 @@ int main() {
             else if(pt.get<int>("state") == 1){
                 int id = pt.get<int>("idRequest");
                 string nroPage = pt.get<string>("nroPage");
+                int nroPages;
                 search_result current_result = responses.find(id)->second;
+                if(current_result.size() <= 20) nroPages = 1;
+                else nroPages = current_result.size() / 20;
                 json_string = "{\"data\": { \"result\": [";
                 for(int i = 20*(stoi(nroPage)-1);i<20*stoi(nroPage);i++){
                     if(i >= current_result.size()){
@@ -121,7 +124,7 @@ int main() {
                     json_string += "{ \"id\":\"" + to_string(current_result[i].second) + "\", \"title\": \"" + title + "\", \"content\":\"" + contain + "\"},"; 
                 }
                     json_string.pop_back();
-                    json_string += "], \"idRequest\": " + to_string(id) + " }}";
+                    json_string += "], \"idRequest\": " + to_string(id) + ", \"nroPages\": " + to_string(nroPages) + "}}";
                     //cout << json_string << endl;
                     stream << json_string;
                     json_string = "";
@@ -130,7 +133,7 @@ int main() {
             else{
                 int id = pt.get<int>("idRequest");
                 responses.erase(id);
-                json_string = "{ \"state\": true}";
+                json_string = "{ \"state\": true }";
                 stream << json_string;
                 response->write_get(stream,header);
             }
