@@ -4,6 +4,10 @@
 #include "cli.hpp"
 #include "utility.hpp"
 
+CoreEngine CliApp::getEngine(){
+	return this->engine;
+}
+
 void CliApp::print(const std::map<int, int>& freqs, const double time) {
 
 	search_result result;
@@ -138,7 +142,7 @@ search_result CliApp::SearchWeb(std::string query) {
     };
 
 	double time = profile(query_index);
-	print(freqs, time); 
+	//print(freqs, time); 
 
 	sortMap(freqs, result);
     return result;

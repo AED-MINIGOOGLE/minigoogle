@@ -14,10 +14,11 @@ public:
 	void sortMap(const std::map<int, int>& freqs, search_result& result);
     int prueba(int);
     void RunWeb();
+    CoreEngine getEngine();
+    CoreEngine engine;
 private:
 	std::string get_dir();
     void print(const std::map<int, int>& freqs, const double time);
 	std::vector<std::string> files;
-    CoreEngine engine;
 };
 #endif
