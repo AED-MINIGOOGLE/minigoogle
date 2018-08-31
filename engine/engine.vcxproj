@@ -77,7 +77,7 @@
   <ItemGroup>
     <ClCompile Include="cli.cpp" />
     <ClCompile Include="coreengine.cpp" />
-    <ClCompile Include="frequencymap.cpp" />
+    <ClCompile Include="invertedindex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="utility.cpp" />
@@ -85,7 +85,7 @@
   <ItemGroup>
     <ClInclude Include="cli.hpp" />
     <ClInclude Include="coreengine.hpp" />
-    <ClInclude Include="frequencymap.hpp" />
+    <ClInclude Include="invertedindex.hpp" />
     <ClInclude Include="parser.hpp" />
     <ClInclude Include="utility.hpp" />
   </ItemGroup>
