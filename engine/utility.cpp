@@ -9,8 +9,7 @@ double profile(function<void(void)> func) {
     auto start = high_resolution_clock::now();
     func();
     auto finish = high_resolution_clock::now();
-    duration<double, std::milli> fp_ms = (finish - start);
-	return fp_ms.count();
+	return duration_cast<nanoseconds>(finish - start).count() / 10e3;
 }
 
 vector<string> list_immediate_files(string const& dirname) {

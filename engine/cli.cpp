@@ -14,7 +14,7 @@ void CliApp::print(const map<int, int>& freqs, const double time) {
     if (result.size() <= 0) {
         cout << "Not found." << endl;
     } else {
-		std::cout << "About " << result.size() << " results (" << time << " ms)" << std::endl;
+		std::cout << "About " << result.size() << " results (" << time << " us)" << std::endl;
         for (auto &it : result) {
 			std::cout << "[" << count <<"] " << (*(engine.mDocs[it.second])).title << ": " << it.first << std::endl;
 			count++;
@@ -80,7 +80,7 @@ int CliApp::run() {
     };
 
 	double time = profile(process);
-    cout << "\n... Loading index done! \nTook " << time << " ms to build search index." << endl;
+    cout << "\n... Loading index done! \nTook " << time / 10e6 << " s to build search index." << endl;
     string query;
     
     
@@ -123,7 +123,7 @@ void CliApp::RunWeb(){
         res = this->engine.populate(dirname);
     };
     cout << res.size() << endl;
-    cout << "**Took " << profile(process) << "ms to build search index." << endl;
+    cout << "**Took " << profile(process) / 10e6 << "s to build search index." << endl;
 
 }
 
