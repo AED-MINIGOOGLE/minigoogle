@@ -20,7 +20,7 @@ To run the command-line version:
 ```
 ./search
 ```
-###Web
+### Web
 #### Requirements
 ```sh
 Install brew

@@ -9,6 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta charset="utf-8">
+    <meta charset="latin-x">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   </head>
   <body>
@@ -21,32 +22,52 @@
                 Results
               <i class="fa fa-circle text-warning"></i>
             </h4>
-            <form name="form" role="form" >
-                <div style="tetx-align:center;">
-                  <u>NOT FOUND</u>
-                </div>
-              {{ if not .Result }}
-                <div style="tetx-align:center;">
-                  <u>NOT FOUND</u>
-                </div>
-              {{ else }}
-                {{ with .Result }}
-			            {{ range . }}
-              			<div class="form-group">
-                      <label><u>{{.Title}}</u></label>
-                      <input id="input-data-go" type="text" value="{{.Content}}" class="form-control" disabled="disabled">
+            {{ if not .Result }}
+            <div class="container">
+              <main id="content" class="error-container" role="main">
+                <div class="row">
+                  <div class="col-lg-4 col-sm-6 col-xs-10 col-lg-offset-4 col-sm-offset-3 col-xs-offset-1">
+                    <div class="error-container">
+                      <h1 class="error-code">404</h1>
+                      <p class="error-info">
+                        Opps, no existe resultados para esta palabra.
+                      </p>
+                      <p class="error-help mb">
+                        Si estas seguro que si, comunícate con nosotros o vuelve a intentar.
+                      </p>
+                      <div class="clearfix">
+                        <div class="btn-toolbar">
+                          <a href="/" class="btn btn-inverse">
+                            Inicio 
+                          </a>
+                        </div>
+                      </div>
                     </div>
-			            {{ end }} 
-              	{{ end }}
-              	
-              	
-              	
+                  </div>
+                </div>
+              </main>
+            </div>
+            {{ else }}
+              {{ with .Result }}
+		            {{ range . }}
+            			<div class="form-group">
+                    <label><u>{{.Title}}</u></label>
+                    <input id="input-data-go" type="text" value="{{.Content}}" class="form-control" disabled="disabled">
+                  </div>
+		            {{ end }}
             	{{ end }}
-              <div class="clearfix" style="padding:25px;text-align:center;">
-                <!--<button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary">Enviar</button> -->
-                <a href="/" class="btn btn-primary">Regresar</a>
-              </div>
-            </form>
+	            <form action="/searchpage" id="search-page" role="form" method="get" name="form" class="login-form mt-lg">
+	              <div class="clearfix form-group">
+	                <p>Páginas: </p>
+	                {{ range .NroPages}}
+                    <button type="submit" name="number" value="{{.}}">{{.}}</button>
+                  {{ end }}
+                </div>
+              </form>
+            <div class="clearfix" style="padding:25px;text-align:center;">
+              <a href="/" class="btn btn-primary">Regresar</a>
+            </div>
+          	{{ end }}
           </div>
         </div>
       </main>
