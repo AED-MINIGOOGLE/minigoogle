@@ -21,7 +21,7 @@ std::vector<std::string> CoreEngine::populate(std::string const& dirname) {
     return files;
 }
 
-void CoreEngine::search(std::string& query, std::map<int, int>& freqs) {
+void CoreEngine::search(std::string& query, std::vector<std::map<int, int>>& freqs) {
     mMap.search(query, freqs);
 }
 

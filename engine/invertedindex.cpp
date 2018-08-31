@@ -1,8 +1,8 @@
 #include<cstring>
 #include "utility.hpp"
-#include "frequencymap.hpp"
+#include "invertedindex.hpp"
 
-void FrequencyMap::search(std::string& query, std::map<int, int>& freqs) {
+void InvertedIndex::search(std::string& query, std::vector<std::map<int, int>>& freqs) {
 
 	int word_pos = 0;
 	char word[147];
@@ -14,7 +14,7 @@ void FrequencyMap::search(std::string& query, std::map<int, int>& freqs) {
 		}
 		else {
 			if (word_pos > 0) {
-				freqs = _map[_hash(word)];
+				freqs.push_back(_map[_hash(word)]);
 				word_pos = 0;
 				memset(word, 0, 147 * sizeof(char));
 			}
@@ -22,10 +22,10 @@ void FrequencyMap::search(std::string& query, std::map<int, int>& freqs) {
 	}
 
 	if (word_pos > 0)
-		freqs = _map[_hash(word)];
+		freqs.push_back(_map[_hash(word)]);
 }
 
-void FrequencyMap::insert(std::string& contain, const int key) {
+void InvertedIndex::insert(std::string& contain, const int key) {
 
 	int word_pos = 0;
 	char word[147];
@@ -48,6 +48,6 @@ void FrequencyMap::insert(std::string& contain, const int key) {
 		_map[_hash(word)][key]++;
 }
 
-std::string FrequencyMap::_hash(const char* word) {
+std::string InvertedIndex::_hash(const char* word) {
 	return std::string(word);
 }
