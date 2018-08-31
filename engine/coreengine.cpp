@@ -27,8 +27,8 @@ vector<string> CoreEngine::populate(string const& dirname) {
     return files;
 }
 
-search_result CoreEngine::search(string const& query) {
-    return mMap.search(query);
+void CoreEngine::search(string const& query, map<int, int>& freqs) {
+    mMap.search(query, freqs);
 }
 
 void CoreEngine::process_file(string& filename) {

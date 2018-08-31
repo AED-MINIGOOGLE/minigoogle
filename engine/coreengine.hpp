@@ -14,7 +14,7 @@ public:
     CoreEngine();
     ~CoreEngine();
     vector<string> populate(string const& dirname);
-    search_result search(string const& query);
+    void search(string const& query, map<int, int>& freqs);
     int num_files();
     int i = 0;
 	map<int, RetrievalData*> mDocs;

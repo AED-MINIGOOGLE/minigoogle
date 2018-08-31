@@ -7,13 +7,18 @@
 CoreEngine CliApp::getEngine(){
 	return this->engine;
 }
-void CliApp::print(search_result result, double time) {
+
+void CliApp::print(const map<int, int>& freqs, const double time) {
+
+	search_result result;
+
+	sortMap(freqs, result);
 
 	int count = 0;
     if (result.size() <= 0) {
         cout << "Not found." << endl;
     } else {
-		std::cout << "About " << result.size() << " results (" << time << " ms)" << std::endl;
+		std::cout << "About " << result.size() << " results (" << time << " us)" << std::endl;
         for (auto &it : result) {
 			std::cout << "[" << count <<"] " << (*(engine.mDocs[it.second])).title << ": " << it.first << std::endl;
 			count++;
@@ -79,28 +84,40 @@ int CliApp::run() {
     };
 
 	double time = profile(process);
-    cout << "\n... Loading index done! \nTook " << time << " ms to build search index." << endl;
+    cout << "\n... Loading index done! \nTook " << time / 10e6 << " s to build search index." << endl;
     string query;
-    search_result result;
+    
     
 	cout << "\n**Enter :q to stop at anytime.**" << endl;
     cout << "Enter search query: ";
     cin >> query;
 
     while (query != ":q") {
-		auto query_index = [this, &query, &result]() {
-			result = this->engine.search(query);
+		map<int, int> freqs;
+
+		auto query_index = [this, &query, &freqs]() {
+			this->engine.search(query, freqs);
 		};
 
-		print(result, profile(query_index));
+		time = profile(query_index);
 
+		print(freqs, time);
+
+		freqs.clear();
 		cout << "**Enter :q to stop at anytime.**" << endl;
 		cout << "Enter search query: ";
 		cin >> query;
 	}
-
+	
     cout << "Exiting search engine...Done!" << endl;
     return 0;
+}
+
+void CliApp::sortMap(const map<int,int>& freqs, search_result& result) {
+	for (auto& it : freqs) {
+		result.push_back(make_pair(it.second, it.first));
+	}
+	stable_sort(result.rbegin(), result.rend());
 }
 
 void CliApp::RunWeb(){
@@ -110,23 +127,31 @@ void CliApp::RunWeb(){
         res = this->engine.populate(dirname);
     };
     cout << res.size() << endl;
-    cout << "**Took " << profile(process) << "us to build search index." << endl;
+    cout << "**Took " << profile(process) / 10e6 << "s to build search index." << endl;
 
 }
 
 search_result CliApp::SearchWeb(string query) {
     search_result result;
-        cout << this->engine.i << endl;
-        auto query_index = [this, &query, &result] () {
-            result = this->engine.search(query);
-        };
-        cout << "**Took " << profile(query_index) << "us to query tree." << endl;  
-		//this->print(result,profile(query_index));  
+	map<int, int> freqs;
+    
+	cout << this->engine.i << endl;
+
+    auto query_index = [this, &query, &freqs] () {
+        this->engine.search(query, freqs);
+    };
+
+	double time = profile(query_index);
+	//print(freqs, time); 
+
+	sortMap(freqs, result);
     return result;
 }
+
 int CliApp::prueba(int n){
     return n;
 }
+
 CliApp::CliApp(int argc, char **argv) {}
 CliApp::~CliApp() {}
 CliApp::CliApp() {}

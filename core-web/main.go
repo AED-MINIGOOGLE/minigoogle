@@ -4,9 +4,19 @@ import (
   "time";
   "net/http";
   "io/ioutil";
+  "html/template";
   "github.com/gorilla/mux";
   "github.com/jenazads/logs"
 )
+
+type DataFound struct{
+  Title   string
+  Content string
+}
+
+type Pages struct {
+  Pages []DataFound
+}
 
 const(
 // hostnames
@@ -17,6 +27,7 @@ const(
 // index paths
   Template_index = "index.html"
   Template_about = "templates/about.html"
+  Template_pagesfound = "templates/pagesfound.html"
 // directories
   css = "assets/css"
   depen = "assets/dependencies"
@@ -88,6 +99,16 @@ func AboutHandler(w http.ResponseWriter, r *http.Request) {
   Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
 }
 
+func PagesFoundHandler(w http.ResponseWriter, r *http.Request) {
+  start := time.Now()
+  LogServer(r.Method, r.URL.Path,"Pages Found")
+  t, _ := template.ParseFiles(Template_pagesfound)
+  //DataPages := Pages{Pages: []DataFound{{Title: "pagina 1", Content: "Texto de pagina 1"}, {Title: "pagina 2", Content: "Texto de pagina 2"}}}
+  DataPages := Pages{Pages: nil}
+  t.Execute(w, DataPages)
+  Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
+}
+
 func MuxInitService(muxHttp *http.ServeMux){
   server := &http.Server{
     Addr   : ListenHTTP,
@@ -105,6 +126,8 @@ func HttpListenerServiceInit(){
   router := mux.NewRouter()
   router.HandleFunc("/", IndexHandler)
   router.HandleFunc("/about", AboutHandler)
+  router.HandleFunc("/pagesfound", PagesFoundHandler)
+  
   //router.NotFoundHandler = http.HandlerFunc(handlers.NotFoundHandler)
   
   muxHttp := http.NewServeMux()

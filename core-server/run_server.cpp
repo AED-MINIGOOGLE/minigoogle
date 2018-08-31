@@ -26,7 +26,6 @@
 
 using namespace std;
 using namespace boost::property_tree;
-typedef pair<int, int> pair;
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
 int main() {
