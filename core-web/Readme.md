@@ -34,17 +34,8 @@ Go is an Open Source programming language developed by Google Inc.
 
 Then install some libraries like gorilla (framework web) and logs (system logger).
 
-#### Gorilla
-
-Gorilla is a Web Framework to develop using Golang RESTful services, you can find more information pressing here.  
-You can install on local writting this on terminal:
-
     go get github.com/gorilla/mux
-
-#### Logs
-
-Logs is a library that offers a logger, with alert, warning, success and error messages.
-
+    go get github.com/jenazads/gojwt
     go get github.com/jenazads/logs
 
 ### Setting up the service
@@ -69,11 +60,8 @@ Download .pkg option and install it, restart you terminal session.
 The create your `$HOME/go` directory and then install components:
 
     go get github.com/gorilla/mux
+    go get github.com/jenazads/gojwt
     go get github.com/jenazads/logs
-
-Then, go to `$HOME/go/src` and clone the project:
-
-    git clone https://github.com/jeffersonquispe/ED2018-MCS.git
 
 Once installed components, just run in `minigoogle/core-web`:
 
