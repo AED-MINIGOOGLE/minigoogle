@@ -1,7 +1,26 @@
-<<<<<<< HEAD
-R Tree
-========
+# MiniGoogle/Engine
 
+## Installation
+
+### Consola 
+#### Dependencies
+First you must install `build-essential` to build the application.
+##### On Debian/Ubuntu 
+```
+sudo apt-get install build-essential
+```
+#### Building
+The application can be built using the Makefile.
+```
+cd minigoogle/engine
+make
+```
+### Usage
+To run the command-line version:
+```
+./search
+```
+###Web
 #### Requirements
 ```sh
 Install brew
@@ -17,8 +36,8 @@ brew install boost
 ```
 ```sh
 Install g++
-command for install g++ 
-brew install g++ 
+command for install gcc 
+brew install gcc
 ```
 ```sh
 Install cmake
@@ -34,6 +53,7 @@ brew install make
 #### Compile and run server
 
 ```sh
+cd core-server/
 mkdir build
 cd build
 cmake ..
@@ -41,7 +61,5 @@ make
 cd ..
 Run the server: `./build/run_server`
 ```
-=======
-# minigoogle
->>>>>>> 60d1eff54bb2383cf49d55a770a4f0575fc6cee1
+
 
