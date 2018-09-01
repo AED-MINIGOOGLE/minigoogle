@@ -3,24 +3,45 @@
 ## Installation
 
 ### Consola 
+
 #### Dependencies
 First you must install `build-essential` to build the application.
 ##### On Debian/Ubuntu 
 ```
 sudo apt-get install build-essential
 ```
+
+##### On MAC
+
+```sh
+Install g++
+command for install gcc 
+brew install gcc
+```
+```sh
+Install cmake
+command for install cmake
+brew install cmake 
+```
+```sh
+Install make
+command for install make
+brew install make 
+```
+
 #### Building
 The application can be built using the Makefile.
 ```
 cd minigoogle/engine
 make
 ```
-### Usage
+#### Usage
 To run the command-line version:
 ```
 ./engine
 ```
 ### Web
+
 #### Requirements
 ```sh
 Install brew
@@ -62,11 +83,11 @@ cd ..
 Run the server: `./build/run_server`
 ```
 
-# Installing on Linux GO server
+#### Installing on Linux GO server
 
 First we need to install in this order:
 
-## Installing Go language
+##### Installing Go language
 
 Go is an Open Source programming language developed by Google Inc.  
 
@@ -94,7 +115,7 @@ Go is an Open Source programming language developed by Google Inc.
       source .profile
       sudo source /etc/profile
 
-### Installing some libraries or dependencies for Golang
+##### Installing some libraries or dependencies for Golang
 
 Then install some libraries like gorilla (framework web) and logs (system logger).
 
@@ -102,7 +123,7 @@ Then install some libraries like gorilla (framework web) and logs (system logger
     go get github.com/jenazads/gojwt
     go get github.com/jenazads/logs
 
-### Setting up the service
+##### Setting up the service
 
 Once installed components, just run in `minigoogle/core-web`:
 
@@ -111,11 +132,11 @@ Once installed components, just run in `minigoogle/core-web`:
 
 For more information about installation, press [here](http://jenazads.com/frameworks/Create-a-REST-service-using-Go-Language-and-BeeGo-Framework).
 
-# Installing on MAC
+##### Installing on MAC
 
 First we need to install in this order:
 
-## Golang
+###### Golang
 
 To install go latest:  
 go to [golang page](https://golang.org/dl/) and choose the option for MAC.  
