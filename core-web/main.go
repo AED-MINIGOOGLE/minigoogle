@@ -55,7 +55,7 @@ var SearchText string
 
 const(
 // hostnames
-  Hostname = "pocosearch.fmorenovr.com"//"localhost"
+  Hostname = "minigoogle.gescloud.io"//"localhost"
 // http
   Httpprotocol   = "http://"
   ListenHTTP     = ":80"
