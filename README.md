@@ -2,16 +2,16 @@
 
 ## Installation
 
-### Consola 
+## Consola Application
 
-#### Dependencies
+### Dependencies
 First you must install `build-essential` to build the application.
-##### On Debian/Ubuntu 
+#### On Debian/Ubuntu 
 ```
 sudo apt-get install build-essential
 ```
 
-##### On MAC
+#### On MAC
 
 ```sh
 Install g++
@@ -29,18 +29,20 @@ command for install make
 brew install make 
 ```
 
-#### Building
+### Building
 The application can be built using the Makefile.
 ```
 cd minigoogle/engine
 make
 ```
-#### Usage
-To run the command-line version:
+### Usage
+To run the command-line version and pass the directory of http://www.cs.upc.edu/~nlp/wikicorpus/ downloades by indexing:
 ```
 ./engine
 ```
-### Web
+## Web Application
+
+### Server
 
 #### Requirements
 ```sh
@@ -83,7 +85,9 @@ cd ..
 Run the server: `./build/run_server`
 ```
 
-#### Installing on Linux GO server
+### Frontend
+
+#### Installing Go Server on Debian/Ubuntu
 
 First we need to install in this order:
 
@@ -132,11 +136,11 @@ Once installed components, just run in `minigoogle/core-web`:
 
 For more information about installation, press [here](http://jenazads.com/frameworks/Create-a-REST-service-using-Go-Language-and-BeeGo-Framework).
 
-##### Installing on MAC
+#### Installing Go on MAC
 
 First we need to install in this order:
 
-###### Golang
+##### Golang
 
 To install go latest:  
 go to [golang page](https://golang.org/dl/) and choose the option for MAC.  
