@@ -15,7 +15,7 @@ import (
 )
 
 type DataFound struct{
-  Id      int      `json:"id"`
+  Id      string   `json:"id"`
   Title   string   `json:"title"`
   Content string   `json:"content"`
 }
@@ -52,6 +52,7 @@ var DataPages DataToWeb
 var AuxIdRequest int = -1
 var WasQuery bool = false
 var SearchText string
+var pageInfo DataFound
 
 const(
 // hostnames
@@ -60,9 +61,11 @@ const(
   Httpprotocol   = "http://"
   ListenHTTP     = ":80"
 // index paths
-  Template_index = "index.html"
-  Template_about = "templates/about.html"
+  Template_index      = "index.html"
+  Template_about      = "templates/about.html"
+  Template_pageInfo   = "templates/pageinfo.html"
   Template_pagesfound = "templates/pagesfound.html"
+  Template_notFound   = "templates/notfound.html"
 // directories
   css = "assets/css"
   depen = "assets/dependencies"
@@ -130,6 +133,17 @@ func FromJSON(data []byte) (DataToWeb, error) {
   elements := make(map[string]Data)
   err := json.Unmarshal(data, &elements)
   return DataToWeb{Result: elements["data"].Result, IdRequest: elements["data"].IdRequest, NroPages: makeRange(1,elements["data"].NroPages)}, err
+}
+
+func searchById(v string, data []DataFound) ([]DataFound){
+  var datos []DataFound = nil
+  for _, elem := range data {
+    if v == elem.Id{
+      datos = append(datos, elem)
+      return datos
+    }
+  }
+  return nil
 }
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
@@ -234,6 +248,25 @@ func PagesFoundHandler(w http.ResponseWriter, r *http.Request) {
   Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
 }
 
+func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+  start := time.Now()
+  LogServer(r.Method, r.URL.Path,"NotFound")
+  t, _ := template.ParseFiles(Template_notFound)
+  t.Execute(w, nil)
+  Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
+}
+
+func PageInfoHandler(w http.ResponseWriter, r *http.Request) {
+  r.ParseForm()
+  start := time.Now()
+  v := r.Form["idpage"][0]
+  pageInfo := searchById(v, DataPages.Result)
+  LogServer(r.Method, r.URL.Path,"NotFound")
+  t, _ := template.ParseFiles(Template_pageInfo)
+  t.Execute(w, pageInfo[0])
+  Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
+}
+
 func MuxInitService(muxHttp *http.ServeMux){
   server := &http.Server{
     Addr   : ListenHTTP,
@@ -254,8 +287,9 @@ func HttpListenerServiceInit(){
   router.HandleFunc("/pagesfound", PagesFoundHandler)
   router.HandleFunc("/search", SearchHandler).Methods("GET")
   router.HandleFunc("/searchpage", SearchPageHandler).Methods("GET")
+  router.HandleFunc("/pageinfo", PageInfoHandler).Methods("GET")
   
-  //router.NotFoundHandler = http.HandlerFunc(handlers.NotFoundHandler)
+  router.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
   
   muxHttp := http.NewServeMux()
   muxHttp.Handle("/", router)
