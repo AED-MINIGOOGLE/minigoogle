@@ -233,8 +233,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func AboutHandler(w http.ResponseWriter, r *http.Request) {
   start := time.Now()
   LogServer(r.Method, r.URL.Path,"About")
-  p, _ := LoadPage(Template_about)
-  w.Write(p.Body)
+  t, _ := template.ParseFiles(Template_about)
+  t.Execute(w, nil)
   Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
 }
 
