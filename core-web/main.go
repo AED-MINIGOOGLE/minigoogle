@@ -56,7 +56,7 @@ var pageInfo DataFound
 
 const(
 // hostnames
-  Hostname = "minigoogle.gescloud.io"//"localhost"
+  Hostname = "pocosearch.fmorenovr.com"//"minigoogle.gescloud.io"//"localhost"
 // http
   Httpprotocol   = "http://"
   ListenHTTP     = ":80"
@@ -147,6 +147,7 @@ func searchById(v string, data []DataFound) ([]DataFound){
 }
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "text/html")
   r.ParseForm()
   start := time.Now()
   SearchText = strings.ToLower(r.Form["search-text"][0])
@@ -174,6 +175,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func SearchPageHandler(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "text/html")
   r.ParseForm()
   start := time.Now()
   v, _ := strconv.ParseInt(r.Form["number"][0], 10, 64)
@@ -202,6 +204,7 @@ func SearchPageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "text/html")
   if WasQuery == true{
     sq := FinishQuery{State: 2, IdRequest: AuxIdRequest}
     jsonObj, _ := gojwt.ToJSON(sq)
@@ -231,6 +234,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AboutHandler(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "text/html")
   start := time.Now()
   LogServer(r.Method, r.URL.Path,"About")
   t, _ := template.ParseFiles(Template_about)
@@ -239,6 +243,7 @@ func AboutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func PagesFoundHandler(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "text/html")
   AuxIdRequest = DataPages.IdRequest
   WasQuery = true
   start := time.Now()
@@ -249,6 +254,7 @@ func PagesFoundHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "text/html")
   start := time.Now()
   LogServer(r.Method, r.URL.Path,"NotFound")
   t, _ := template.ParseFiles(Template_notFound)
@@ -257,11 +263,12 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func PageInfoHandler(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "text/html")
   r.ParseForm()
   start := time.Now()
   v := r.Form["idpage"][0]
   pageInfo := searchById(v, DataPages.Result)
-  LogServer(r.Method, r.URL.Path,"NotFound")
+  LogServer(r.Method, r.URL.Path,"Page Info")
   t, _ := template.ParseFiles(Template_pageInfo)
   t.Execute(w, pageInfo[0])
   Logger.Info("Completed %s in %v\n", r.URL.Path, time.Since(start))
@@ -283,7 +290,7 @@ func HttpListenerServiceInit(){
   // router
   router := mux.NewRouter()
   router.HandleFunc("/", IndexHandler)
-  router.HandleFunc("/about", AboutHandler)
+  router.HandleFunc("/about", AboutHandler).Methods("GET")
   router.HandleFunc("/pagesfound", PagesFoundHandler)
   router.HandleFunc("/search", SearchHandler).Methods("GET")
   router.HandleFunc("/searchpage", SearchPageHandler).Methods("GET")
