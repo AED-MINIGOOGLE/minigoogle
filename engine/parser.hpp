@@ -21,6 +21,7 @@ private:
 	bool get_eo_doc(const std::string & s);
 	void get_value_of(const std::string & query, const std::string & line, std::string & val);
 	void get_value_of(const std::string & query, const std::string & line, unsigned int & val);
+	std::string iso_8859_1_to_utf8(std::string &str);
 public:
 	Parser(std::string f) : File_dir(f) {};
 	bool getNextDocument(std::ifstream & file_open, std::vector<RetrievalData> & ans);
