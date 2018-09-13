@@ -190,7 +190,7 @@ namespace SimpleWeb {
 
       void write_get(std::istream &content, CaseInsensitiveMultimap &header) {
               // Set header fields
-		      header.emplace("Content-Type", "text/plain");
+		      header.emplace("Content-Type", "text/plain; text/html; charset=utf-8");
       header.emplace("Access-Control-Allow-Origin", "*");
       header.emplace("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
       header.emplace("Access-Control-Max-Age", "1728000");
