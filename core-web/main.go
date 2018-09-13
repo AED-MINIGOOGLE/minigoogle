@@ -147,7 +147,7 @@ func searchById(v string, data []DataFound) ([]DataFound){
 }
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
-  w.Header().Set("Content-Type", "text/html")
+  w.Header().Set("Content-Type", "text/plain; text/html; charset=utf-8")
   r.ParseForm()
   start := time.Now()
   SearchText = strings.ToLower(r.Form["search-text"][0])
@@ -158,7 +158,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
     Logger.Error("Error: %s", err)
     return
   }
-  req.Header.Set("Content-Type", "application/json;application/x-www-form-urlencoded")
+  req.Header.Set("Content-Type", "application/json;application/x-www-form-urlencoded; charset=utf-8")
   client := &http.Client{}
   resp, err := client.Do(req)
   if err!=nil{
